@@ -80,7 +80,6 @@ function fenToBoard(fen) {
         }
         board.push(row);
     }
-    
     return board;
 }
 
@@ -177,7 +176,4 @@ module.exports = {
     evaluateMaterial,
     evaluatePositional, 
     evaluateAggregate,
-    fenToBoard,
-    PIECE_VALUES,
-    PST
 };
