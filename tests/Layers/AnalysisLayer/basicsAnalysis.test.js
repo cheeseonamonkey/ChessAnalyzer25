@@ -1,5 +1,5 @@
-const {  evaluatePosition } = require("../src/2_AnalysisLayer/evaluationEngine")
-const { isUserWhite, isUserBlack, isUserWinner, parsePgns } = require('../src/2_AnalysisLayer/analysisBasic')
+const {  evaluatePosition } = require("../../../src/Layers/AnalysisLayer/evaluationEngine")
+const { isUserWhite, isUserBlack, isUserWinner, parsePgns } = require('../../../src/Layers/AnalysisLayer/analysisBasic')
 
 // test('1+1=2', () => expect(1+1).toBe(2) ); 
 

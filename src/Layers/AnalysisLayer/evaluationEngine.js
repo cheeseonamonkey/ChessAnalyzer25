@@ -2,7 +2,7 @@
 
 // Piece values
 const PIECE_VALUES = {
-    "P": 100, "N": 282, "B": 318, "R": 479, "Q": 931, "K": 60000
+    "P": 100, "N": 282, "B": 318, "R": 479, "Q": 933, "K": 60000
 };
 
 // Piece-Square Tables - positional bonuses for each square (64 squares, a1-h8)

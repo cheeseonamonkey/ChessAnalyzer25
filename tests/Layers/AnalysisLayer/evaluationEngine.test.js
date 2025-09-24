@@ -1,4 +1,4 @@
-const { isUserWhite, isUserBlack, isUserWinner, parsePgns, evaluateMaterial, evaluatePositional, evaluateAggregate } = require("../src/2_AnalysisLayer/evaluationEngine");
+const { isUserWhite, isUserBlack, isUserWinner, parsePgns, evaluateMaterial, evaluatePositional, evaluateAggregate } = require("../../../src/Layers/AnalysisLayer/evaluationEngine");
 
 describe('Chess Position Evaluation', () => {
     
@@ -61,4 +61,15 @@ describe('Chess Position Evaluation', () => {
         expect(positional.white).toBe(0);
         expect(positional.black).toBe(0);
     });
+        
+    test('Same material, but black winning positionally', () => {
+        // White has extra queen but pieces are poorly placed, Black has active pieces
+        const fen = "r3k2r/4qp1p/6p1/pnppn3/1p2p1bb/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+        const material = evaluateMaterial(fen);
+        const positional = evaluatePositional(fen);
+        
+        expect(material.black == material.white).toBe(true); // same material score
+        expect(positional.black).toBeGreaterThan(positional.white); // black winning positionally
+    });
+
 });
