@@ -37,5 +37,5 @@ coverage/
 dist/
 build/
 
-# Misc
-readme.md
+
+package-lock.json
