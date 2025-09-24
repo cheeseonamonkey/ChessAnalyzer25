@@ -168,7 +168,7 @@ function evaluateAggregate(fen) {
         aggregate: {
             white: aggregateWhite,
             black: aggregateBlack,
-            balance: aggregateWhite - aggregateBlack
+            balance: aggregateWhite - aggregateBlack // positive is white, negative is black
         }
     };
 }
