@@ -1,0 +1,41 @@
+# Node modules
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Environment files
+.env
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage/
+
+# IDE and editor folders/files
+.vscode/
+.idea/
+*.swp
+
+# Dependency lockfiles (optional, depending on your workflow)
+# yarn.lock
+# pnpm-lock.yaml
+
+# Output folders
+dist/
+build/
+
+# Misc
+readme.md
