@@ -5,6 +5,7 @@ Independent modular layers with a strong separation of concerns:
 3. **Analysis/Processing Layer** *(derive metrics - parse data & PGNs, identify insights, calculate statistics, etc.)*
 4. **REST API Layer** *(exposed API endpoints to serve processed data, stats, etc.)*
 5. **UI Layer** *(front-end)*
+
 Layers are backwards-dependant; data only moves sequentially in one direction.
 
 ### 1. Chess.com API (external)
@@ -55,7 +56,8 @@ Front-end / UI.
 - **Metric**: Any calculated data, derived in the analysis layer *(i.e. an integer: the material score of a chess position)*. You can derive a metric from a position, a game, one or more series, etc.
 - **Series**: A set of sequential metrics *(i.e. an array: a list of all positions' material scores over the course of a game)*; a type of metric itself.
 - **Baseline**: Reference metrics for context/comparison *(random user data)*
-- 
+
+
 
 
 ### Credits & Thanks
