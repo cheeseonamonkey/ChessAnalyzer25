@@ -45,17 +45,17 @@ It itself has 4 loose sub-layers:
 Clean API endpoints for the metrics.
 
 ### 5. UI Layer
-
-Front-end UI.
+Front-end / UI.
 
 
 # Remarks
 - For comparitive & context purposes, always show values with average/noise values from random users, preferably even grouped by ELO.
 
 ### Project-specific terminologies:
-- **Metric**: Any calculated data, derived in the analysis layer *(i.e. an integer: the material score of a chess position)*. You can derive a metric from a position, a game, a series, etc.
-- **Series**: A set of sequential metrics *(i.e. an array: the material score over the course of a game)*.
-
+- **Metric**: Any calculated data, derived in the analysis layer *(i.e. an integer: the material score of a chess position)*. You can derive a metric from a position, a game, one or more series, etc.
+- **Series**: A set of sequential metrics *(i.e. an array: a list of all positions' material scores over the course of a game)*.
+- **Baseline**: Reference metrics for context/comparison *(random user data)*
+- 
 
 
 ### Credits & Thanks
