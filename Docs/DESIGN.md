@@ -25,7 +25,7 @@ This layer itself has sub-layers:
  1. Pre-processing
  2. Position metrics *(metrics on a single chess position)*
  3. Game metrics *(metrics on all positions throughout a game)*
- 4. User metrics *(metrics on all games throughout a user's games)*
+ 4. User metrics *(metrics on all games throughout a user)*
 
 #### Position metrics:
  - Metric derived from a single position *(FEN)*
@@ -33,6 +33,7 @@ This layer itself has sub-layers:
  - Metric derived from many positions
 #### User metrics:
  - Metric derived from many games
+
 
 
 Win/loss/draw rates vs. specific metrics:
@@ -44,7 +45,7 @@ Win/loss/draw rates vs. specific metrics:
     - etc.
 
 ### 4. REST API Layer
-Clean API endpoints for the metrics.
+Clean API endpoints. 
 
 ### 5. UI Layer
 Front-end / UI.
@@ -53,6 +54,7 @@ Front-end / UI.
 
 # Remarks
 - For comparitive & context purposes, always show values with average/noise values from random users, preferably even grouped by ELO.
+- Layered *(vs pipeline)* pattern here because: While both do sequential steps of data transformation, *layers* can utilize dependencies of previous steps - *pipeline* steps are interchangeable and can be in different orders.
 
 ### Project-specific dev terminologies:
 - **Metric**: Any calculated data, derived in the analysis layer *(i.e. an integer: the material score of a chess position)*. You can derive a metric from a position, a game, one or more series, etc.
