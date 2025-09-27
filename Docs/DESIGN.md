@@ -6,7 +6,7 @@ Independent modular layers with a strong separation of concerns:
 3. **Analysis/Processing Layer** *(derive metrics - parse data & PGNs, identify insights, calculate statistics, etc.)*
 4. **REST API Layer** *(exposed API endpoints to serve processed data, stats, etc.)*
 5. **UI Layer** *(front-end)*
-Layers are backwards-dependant; any layer can have open endpoints, but data only moves sequentially in one direction.
+Layers are *backwards-dependant*; data moves sequentially in one direction. 
 
 ### 1. Chess.com API (external)
  - Chess.com public API, archiving all chess games
@@ -17,23 +17,25 @@ Layers are backwards-dependant; any layer can have open endpoints, but data only
 Fetching and organize data from Chess.com.
  - Aggressive disk-caching for past months *(data will never change)*
  - Politely respect Chess.com rate-limits
- - Preprocess data *(parse PGNs, etc.)*
 
 ### 3. Analysis Layer
 All calculations & processing - turning raw game data into useful metrics.
 
-It itself has 3 loose sub-layers:
- 1. Position metrics *(metrics on a single chess position)*
- 2. Game metrics *(metrics on all positions throughout a game)*
- 3. User metrics *(metrics on all games throughout a user's games)*
->*(keep these sub-layers?? or just wing it??)*:
+This layer itself has sub-layers:
+ 1. Pre-processing
+ 2. Position metrics *(metrics on a single chess position)*
+ 3. Game metrics *(metrics on all positions throughout a game)*
+ 4. User metrics *(metrics on all games throughout a user's games)*
 
 #### Position metrics:
  - Metric derived from a single position *(FEN)*
 #### Game metrics:
- - Metric derived from 
+ - Metric derived from many positions
 #### User metrics:
-  - Win/loss/draw rates vs. specific metrics:
+ - Metric derived from many games
+
+
+Win/loss/draw rates vs. specific metrics:
     - ECO
     - White / black
     - Sharpness
