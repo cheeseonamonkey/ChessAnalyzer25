@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
+
 // Custom find-up function
 function findUpSync(filename, startDir = __dirname) {
   let dir = startDir;
@@ -15,13 +16,15 @@ function findUpSync(filename, startDir = __dirname) {
 
 // Usage in your Cache class
 class Cache {
-  dir;
+  dir; //string
+
+  Users; //object for DSL?
 
   constructor() {
-    this.init_cache_sync();
+    this.init_cache();
   }
 
-  init_cache_sync() {
+  init_cache() {
     const packageJsonPath = findUpSync('package.json');
     if (!packageJsonPath) {
       throw new Error('Could not find project root (no package.json found!)');
@@ -39,6 +42,9 @@ class Cache {
       fs.rmSync(this.dir, { recursive: true, force: true });
     }
   }
+
+
+
 }
 
 

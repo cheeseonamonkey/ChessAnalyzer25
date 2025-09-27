@@ -1,0 +1,1 @@
+// evaluate all positions of the game
