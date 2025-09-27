@@ -52,13 +52,13 @@ Front-end / UI.
 # Remarks
 - For comparitive & context purposes, always show values with average/noise values from random users, preferably even grouped by ELO.
 
-### Project-specific terminologies:
+### Project-specific dev terminologies:
 - **Metric**: Any calculated data, derived in the analysis layer *(i.e. an integer: the material score of a chess position)*. You can derive a metric from a position, a game, one or more series, etc.
 - **Series**: A set of sequential metrics *(i.e. an array: a list of all positions' material scores over the course of a game)*; a type of metric itself.
 - **Baseline**: Reference metrics for context/comparison *(random user data)*
 
 
 ### Credits & Thanks
-- Sunfish
+- Sunfish _(I heavily modified their chess engine into evaluation functions & converted it to JS)_
 
 
