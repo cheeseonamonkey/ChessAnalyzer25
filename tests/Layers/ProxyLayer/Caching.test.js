@@ -2,13 +2,14 @@
 
 const fs = require('fs');
 const path = require('path');
-const { readCache, writeCache } = require("../../../src/Layers/ProxyLayer/Caching");
+const { Cache } = require("../../../src/Layers/ProxyLayer/Caching");
 
 
   let cache = new Cache()
 
-  test('should create .cache directory', () => {
+  test('should create .cache directory (and sub-dirs)', () => {
     expect(fs.existsSync(cache.dir)).toBe(true);
+    
     expect(fs.existsSync(path.join(cache.dir, 'Users'))).toBe(true);
   });
 
