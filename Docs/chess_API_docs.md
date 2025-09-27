@@ -1,85 +1,66 @@
-Sure! Here's a **concise** and **well-formatted Markdown version** of the **Chess.com Player API** reference you've shared:
 
----
 
-# ♟️ Chess.com Public API Overview
+## Player Profile
 
-## 🔹 Player Profile
+Endpoint:
+`GET https://api.chess.com/pub/player/ffffattyyyy`
 
-**Endpoint:**
-`GET https://api.chess.com/pub/player/{username}`
-
-**Returns:** Player details.
-
-**Sample Response:**
+Player details.
 
 ```json
 {
-  "@id": "URL",
-  "url": "URL",
-  "username": "string",
+  "username": "ffffattyyyy",
   "player_id": 41,
-  "title": "string",               // optional (e.g., GM, IM)
-  "status": "basic | premium | closed | mod | staff | etc.",
-  "name": "string",                // optional
-  "avatar": "URL",                // optional
-  "location": "string",           // optional
-  "country": "URL",
+  "title": "string",  // optional
+  "status": "basic | premium | closed | etc.",
+  "name": "string",  // optional
+  "avatar": "URL",   // optional
+  "location": "string",  // optional
   "joined": 1178556600,
-  "last_online": 1500661803,
   "followers": 17,
-  "is_streamer": true,
-  "twitch_url": "https://twitch.tv/...",
   "fide": 2500
 }
 ```
 
-📘 [Example Profile](https://api.chess.com/pub/player/erik)
 
----
 
-## 📅 Monthly Game Archives (List)
+## Monthly Game Archives
 
-**Endpoint:**
-`GET https://api.chess.com/pub/player/{username}/games/archives`
+Endpoint:
+`GET https://api.chess.com/pub/player/ffffattyyyy/games/archives`
 
-**Returns:** List of available archive URLs by month.
+List of monthly game archive URLs.
 
 ```json
 {
   "archives": [
-    "https://api.chess.com/pub/player/erik/games/2009/10",
+    "https://api.chess.com/pub/player/ffffattyyyy/games/2009/10",
+    "https://api.chess.com/pub/player/ffffattyyyy/games/2009/9"
     ...
   ]
 }
 ```
 
-📘 [Example](https://api.chess.com/pub/player/erik/games/archives)
 
----
 
-## ♟️ Monthly Games
+## Monthly Games
 
-**Endpoint:**
-`GET https://api.chess.com/pub/player/{username}/games/{YYYY}/{MM}`
+Endpoint:
+`GET https://api.chess.com/pub/player/ffffattyyyy/games/2025/9`
 
-**Returns:** All finished games (Live & Daily) in a given month.
-
-**Game Object Sample:**
+Games played in the given month.
 
 ```json
 {
   "white": {
     "username": "player1",
     "rating": 1492,
-    "result": "win | lose | draw | etc.",
-    "@id": "profile_url"
+    "result": "win | lose | draw"
   },
   "black": {
     "username": "player2",
     "rating": 1942,
-    "result": "resigned",
-    "@id": "profile_url"
+    "result": "resigned"
   },
   "accuracies": {
     "white": 92.3,
@@ -87,89 +68,19 @@ Sure! Here's a **concise** and **well-formatted Markdown version** of the **Ches
   },
   "url": "game_url",
   "pgn": "PGN data",
-  "fen": "final FEN",
-  "start_time": 1254438881,
-  "end_time": 1254670734,
-  "time_control": "600+5",
-  "rules": "chess",
-  "eco": "E20",
-  "tournament": "URL",
-  "match": "URL"
+  "fen": "final FEN"
 }
 ```
 
----
 
-## 📊 Player Stats
 
-**Endpoint:**
-`GET https://api.chess.com/pub/player/{username}/stats`
+## Player Stats
 
-**Returns:** Stats for different game modes and activities.
+Endpoint:
+`GET https://api.chess.com/pub/player/ffffattyyyy/stats`
 
-**Sample Stats Object:**
+Player stats for various modes.
 
 ```json
-{
-  "chess_blitz": {
-    "last": {
-      "rating": 1450,
-      "date": 1610000000
-    },
-    "best": {
-      "rating": 1530,
-      "date": 1600000000
-    },
-    "record": {
-      "win": 120,
-      "loss": 80,
-      "draw": 20
-    }
-  },
-  "tactics": {
-    "highest": { "rating": 2100, "date": 1620000000 },
-    "lowest": { "rating": 1500, "date": 1590000000 }
-  },
-  "lessons": {
-    "highest": { "rating": 1800, "date": 1630000000 },
-    "lowest": { "rating": 1300, "date": 1580000000 }
-  },
-  "puzzle_rush": {
-    "daily": { "score": 28, "total_attempts": 5 },
-    "best": { "score": 34, "total_attempts": 20 }
-  }
-}
+{"chess_rapid":{"last":{"rating":406,"date":1758927203,"rd":17},"best":{"rating":698,"date":1753191353,"game":"https://www.chess.com/game/live/140980363540"},"record":{"win":273,"loss":294,"draw":22}},"chess_bullet":{"last":{"rating":147,"date":1758616401,"rd":204},"record":{"win":0,"loss":2,"draw":0}},"chess_blitz":{"last":{"rating":215,"date":1758770122,"rd":92},"best":{"rating":337,"date":1753084506,"game":"https://www.chess.com/game/live/143455327002"},"record":{"win":6,"loss":8,"draw":0}},"fide":0,"tactics":{"highest":{"rating":1002,"date":1758518326},"lowest":{"rating":400,"date":1753083226}},"puzzle_rush":{"best":{"total_attempts":9,"score":6}}}
 ```
-
----
-Here’s a clean and concise fix for the **"Game Metadata"** section you asked about — now properly formatted and consistent with the rest of your Markdown reference:
-
----
-
-## ⏱ Game Metadata
-
-### 🎯 Game Result Codes
-
-| Code           | Description           |
-| -------------- | --------------------- |
-| `win`          | Win                   |
-| `checkmated`   | Checkmated            |
-| `agreed`       | Draw agreed           |
-| `repetition`   | Draw by repetition    |
-| `timeout`      | Timeout               |
-| `resigned`     | Resigned              |
-| `stalemate`    | Stalemate             |
-| `lose`         | Loss                  |
-| `insufficient` | Insufficient material |
-| `50move`       | Draw by 50-move rule  |
-| `abandoned`    | Abandoned             |
-
-### 📄 Common Fields in Game Objects
-
-| Field           | Description                                                    |
-| --------------- | -------------------------------------------------------------- |
-| `rules`         | Game ruleset: `"chess"`, `"chess960"`, `"kingofthehill"`, etc. |
-| `time_class`    | Time format: `"daily"`, `"rapid"`, `"blitz"`, `"bullet"`       |
-| `time_control`  | PGN-style time control, e.g. `600+5` (10 minutes + 5 sec)      |
-| `last_activity` | Unix timestamp of last move or action                          |
-| `pgn`           | Full PGN (Portable Game Notation) string of the game           |
