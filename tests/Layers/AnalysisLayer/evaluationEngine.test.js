@@ -1,4 +1,4 @@
-const { isUserWhite, isUserBlack, isUserWinner, parsePgns, evaluateMaterial, evaluatePositional, evaluateAggregate } = require("../../../src/Layers/AnalysisLayer/evaluationEngine");
+const { isUserWhite, isUserBlack, isUserWinner, parsePgns, evaluateMaterial, evaluatePositional, evaluateAggregate } = require("../../../src/Layers/AnalysisLayer/Engine/EvaluationEngine");
 
 describe('Chess Position Evaluation', () => {
     

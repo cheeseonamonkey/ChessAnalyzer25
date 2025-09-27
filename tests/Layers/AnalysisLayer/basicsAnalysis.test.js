@@ -1,5 +1,5 @@
-const {  evaluatePosition } = require("../../../src/Layers/AnalysisLayer/evaluationEngine")
-const { isUserWhite, isUserBlack, isUserWinner, parsePgns } = require('../../../src/Layers/AnalysisLayer/analysisBasic')
+const {  evaluatePosition } = require("../../../src/Layers/AnalysisLayer/Engine/EvaluationEngine")
+const { isUserWhite, isUserBlack, isUserWinner, parsePgns } = require('../../../src/Layers/AnalysisLayer/BasicAnalysis')
 
 
 const game1 = {

@@ -17,15 +17,15 @@ Layers are backwards-dependant; any layer can have open endpoints, but data only
 Fetching and organize data from Chess.com.
  - Aggressive disk-caching for past months *(data will never change)*
  - Politely respect Chess.com rate-limits
+ - Preprocess data *(parse PGNs, etc.)*
 
 ### 3. Analysis Layer
 All calculations & processing - turning raw game data into useful metrics.
 
-It itself has 4 loose sub-layers:
- 1. Preprocessing *(clean/order data, parse PGNs, etc.)*
- 2. Position metrics *(metrics on a single chess position)*
- 3. Game metrics *(metrics on all positions throughout a game)*
- 4. User metrics *(metrics on all games throughout a user's games)*
+It itself has 3 loose sub-layers:
+ 1. Position metrics *(metrics on a single chess position)*
+ 2. Game metrics *(metrics on all positions throughout a game)*
+ 3. User metrics *(metrics on all games throughout a user's games)*
 >*(keep these sub-layers?? or just wing it??)*:
 
 #### Position metrics:

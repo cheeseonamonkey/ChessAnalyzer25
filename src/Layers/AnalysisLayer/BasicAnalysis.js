@@ -19,11 +19,11 @@ const parsePgns = (pgnsStrArr) => {
  
 
   const turnCastled = (game, username) => {
-  //
+  //todo
   };
   
   const typeOfCastle = (game, username) => {
-  //
+  //todo
   };
 
 

@@ -1,52 +1,53 @@
-// fetchers.js
+const axios = require('axios');
+
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 // fetch archives of a username
 async function fetchUserArchives(username) {
+    await sleep(15);
     const url = `https://api.chess.com/pub/player/${username}/games/archives`;
-    const response = await fetch(url);
-    const data = await response.json();
-    //console.log(data)
-    return data.archives;
-    
+
+    const response = await axios.get(url);
+    return response.data.archives;
 }
 
 // fetch games from an archive
 async function fetchArchiveGames(username, month, year) {
+    await sleep(5);
     const archiveUrl = `https://api.chess.com/pub/player/${username}/games/${year}/${month}`;
-    const response = await fetch(archiveUrl);
-    const data = await response.json();
-    return data.games; 
+
+    const response = await axios.get(archiveUrl);
+    return response.data.games;
 }
 
 // fetch all games for an array of usernames
 async function fetchAllUsersGames(usernames) {
-    
-    if(usernames[0]==undefined)
-        console.error('usernames should be an array of users')
+    if (!Array.isArray(usernames) || usernames.length === 0) {
+        console.error('usernames should be a non-empty array of users');
+        return [];
+    }
 
     const allGames = [];
 
-    // for each username
     for (let username of usernames) {
         const archives = await fetchUserArchives(username);
 
-        // for each archive of each user
         for (let archiveUrl of archives) {
-            const parts = archiveUrl.split('/'); 
+            const parts = archiveUrl.split('/');
             const year = parts[parts.length - 2];
             const month = parts[parts.length - 1];
 
             const games = await fetchArchiveGames(username, month, year);
-            allGames.push(...games); 
+            allGames.push(...games);
         }
     }
+
     return allGames;
 }
 
-
 module.exports = {
     fetchAllUsersGames
-}
+};
 
 
 /*

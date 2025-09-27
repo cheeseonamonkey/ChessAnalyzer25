@@ -1,6 +1,6 @@
-const { fetchAllUsersGames } = require("../../../src/Layers/ProxyLayer/fetchers");
-const { isUserWhite, isUserBlack, isUserWinner, parsePgns } = require("../../../src/Layers/AnalysisLayer/analysisBasic")
-const { } = require('../../../src/Layers/AnalysisLayer/evaluationEngine')
+const { fetchAllUsersGames } = require("../../../src/Layers/ProxyLayer/Fetchers");
+const { isUserWhite, isUserBlack, isUserWinner, parsePgns } = require("../../../src/Layers/AnalysisLayer/BasicAnalysis")
+const { } = require('../../../src/Layers/AnalysisLayer/Engine/EvaluationEngine')
 
 
 test('fetch all games of user', async ()=>{
@@ -8,3 +8,8 @@ test('fetch all games of user', async ()=>{
     //console.log(games[0])
 });
 
+
+test('fetch all games of another user', async ()=>{
+    let games = await fetchAllUsersGames(['ffatty120']);
+    //console.log(games[0])
+});
