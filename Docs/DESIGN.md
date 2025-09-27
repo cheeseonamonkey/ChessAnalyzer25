@@ -27,12 +27,19 @@ This layer itself has sub-layers:
  3. Game metrics *(metrics on all positions throughout a game)*
  4. User metrics *(metrics on all games throughout a user)*
 
-#### Position metrics:
+
+Position metrics:
  - Metric derived from a single position *(FEN)*
-#### Game metrics:
+Game metrics:
  - Metric derived from many positions
-#### User metrics:
+User metrics:
  - Metric derived from many games
+
+Objective metric:
+- Describes neutral aspects of the position.
+Subjective metric:
+- Must specify a player. 
+
 
 
 
