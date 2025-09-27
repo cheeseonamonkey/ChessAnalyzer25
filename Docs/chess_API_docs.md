@@ -11,11 +11,11 @@ Player details.
 {
   "username": "ffffattyyyy",
   "player_id": 41,
-  "title": "string",  // optional
+  "title": "string",  
   "status": "basic | premium | closed | etc.",
-  "name": "string",  // optional
-  "avatar": "URL",   // optional
-  "location": "string",  // optional
+  "name": "string",  
+  "avatar": "URL",   
+  "location": "string",  
   "joined": 1178556600,
   "followers": 17,
   "fide": 2500
