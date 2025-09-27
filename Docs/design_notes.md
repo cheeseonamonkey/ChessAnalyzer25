@@ -1,4 +1,5 @@
 # Layers:
+
 Independent modular layers with a strong separation of concerns:
 1. **Chess.com API** *(external API - source raw data)*
 2. **Proxy Layer** *(Chess.com API fetching, watching rate limits, caching)*
