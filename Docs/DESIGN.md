@@ -21,11 +21,11 @@ The pipeline is *backwards-dependant*, meaning:
 - testing may require running previous steps *(or mock data)*
 
 
-CPL - centipawn loss
-Metric - any piece of data derived from the source data *("features")*
-Vector - chronological list of metrics *(a type of metric itself)*
-Subjective metric - must include each user's perspective
-Objective metric - neutral aspect of the position
+- CPL - centipawn loss
+- Metric - any piece of data derived from the source data *("features")*
+- Vector - chronologically-related list of metrics *(a type of metric itself)*
+- Subjective metric - must include each user's perspective
+- Objective metric - neutral aspect of the position
 
 
 
