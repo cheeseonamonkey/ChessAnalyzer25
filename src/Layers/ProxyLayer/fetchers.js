@@ -28,7 +28,8 @@ async function fetchAllUsersGames(usernames) {
 
   const allGames = [];
   for (const username of usernames) {
-    if (!(await verifyUserExists(username))) continue;
+    if (!(await verifyUserExists(username)))
+        continue;
 
     const archives = await fetchUserArchives(username);
     for (const archiveUrl of archives) {
