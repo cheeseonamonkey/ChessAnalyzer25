@@ -6,10 +6,10 @@ The pipeline passes a single, mutable reference object though 5 broad layers wit
 1. **Source Layer** *(external Chess.com API)*
 2. **Proxy Layer** *(fetching, rate limits, caching)*
 3. **Analysis/Processing Layer** *(preprocess data, derive all metrics)*
-   1. Pre-processing 
-   2. Position metrics
-   3. Game metrics
-   4. User metrics 
+   1. Pre-processing
+   2. Position metrics *(1D)*
+   3. Game metrics *(2D)*
+   4. User metrics *(3D)*
 5. **REST API Layer** *(final exposed API endpoints)*
 6. **UI Layer**
 
