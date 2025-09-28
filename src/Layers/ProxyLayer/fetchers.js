@@ -12,7 +12,7 @@ async function verifyUserExists(username) {
 }
 
 async function fetchUserArchives(username) {
-  await sleep(15);
+  await sleep(25);
   const res = await axios.get(`https://api.chess.com/pub/player/${username}/games/archives`);
   return res.data.archives;
 }
