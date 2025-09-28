@@ -25,7 +25,7 @@ The pipeline is *backwards-dependant*, meaning:
 |  | |
 |------|------------|
 | CPL | Centipawn loss |
-| Metric | Any piece of data derived from the source data *("features")* |
+| Metric | Any piece of data derived from the source data |
 | Vector | Chronologically-related list of metrics *(a type of metric itself)* |
 | Objective metric | Neutral aspect of the position |
 | Subjective metric | Must include user perspective |
