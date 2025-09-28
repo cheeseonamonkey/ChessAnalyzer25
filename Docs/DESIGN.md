@@ -15,17 +15,20 @@ The pipeline passes a single, mutable reference object though 5 broad layers wit
 
 
 The pipeline is *backwards-dependant*, meaning:
+
 - data moves in only one direction
 - latter layers utilize former layers
 - earlier pipeline steps may not be easily ordered/changed
 - testing may require running previous steps *(or mock data)*
 
 
-- CPL - centipawn loss
-- Metric - any piece of data derived from the source data *("features")*
-- Vector - chronologically-related list of metrics *(a type of metric itself)*
-- Subjective metric - must include each user's perspective
-- Objective metric - neutral aspect of the position
+|  | |
+|------|------------|
+| CPL | Centipawn loss |
+| Metric | Any piece of data derived from the source data *("features")* |
+| Vector | Chronologically-related list of metrics *(a type of metric itself)* |
+| Objective metric | Neutral aspect of the position |
+| Subjective metric | Must include user perspective |
 
 
 
