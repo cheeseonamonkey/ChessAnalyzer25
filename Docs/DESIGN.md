@@ -1,7 +1,7 @@
 Essentially it is a big data transformation pipeline.
 
 
-The pipeline passes a single, mutable reference object though 5 broad layers with strong separations of concern:
+The pipeline passes a single, mutable reference though several broad layers with strong separations of concern:
 
 1. **Source Layer** *(external Chess.com API)*
 2. **Proxy Layer** *(fetching, rate limits, caching)*
@@ -10,12 +10,11 @@ The pipeline passes a single, mutable reference object though 5 broad layers wit
    2. Position metrics *(1D)*
    3. Game metrics *(2D)*
    4. User metrics *(3D)*
-5. **REST API Layer** *(final exposed API endpoints)*
-6. **UI Layer**
+4. **REST API Layer** *(final exposed API endpoints)*
+5. **UI Layer**
 
 
 The pipeline is *backwards-dependant*, meaning:
-
 - data moves in only one direction
 - latter layers utilize former layers
 - earlier pipeline steps may not be easily ordered/changed
