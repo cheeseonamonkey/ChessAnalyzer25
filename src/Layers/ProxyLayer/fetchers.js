@@ -1,53 +1,50 @@
 const axios = require('axios');
 
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
-// fetch archives of a username
+async function verifyUserExists(username) {
+  try {
+    await axios.get(`https://api.chess.com/pub/player/${username}/games/2025/09`);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 async function fetchUserArchives(username) {
-    await sleep(15);
-    const url = `https://api.chess.com/pub/player/${username}/games/archives`;
-
-    const response = await axios.get(url);
-    return response.data.archives;
+  await sleep(15);
+  const res = await axios.get(`https://api.chess.com/pub/player/${username}/games/archives`);
+  return res.data.archives;
 }
 
-// fetch games from an archive
 async function fetchArchiveGames(username, month, year) {
-    await sleep(5);
-    const archiveUrl = `https://api.chess.com/pub/player/${username}/games/${year}/${month}`;
-
-    const response = await axios.get(archiveUrl);
-    return response.data.games;
+  await sleep(5);
+  const res = await axios.get(`https://api.chess.com/pub/player/${username}/games/${year}/${month}`);
+  return res.data.games;
 }
 
-// fetch all games for an array of usernames
 async function fetchAllUsersGames(usernames) {
-    if (!Array.isArray(usernames) || usernames.length === 0) {
-        console.error('usernames should be a non-empty array of users');
-        return [];
+  if (!Array.isArray(usernames) || usernames.length === 0) return [];
+
+  const allGames = [];
+  for (const username of usernames) {
+    if (!(await verifyUserExists(username))) continue;
+
+    const archives = await fetchUserArchives(username);
+    for (const archiveUrl of archives) {
+      const [year, month] = archiveUrl.split('/').slice(-2);
+      const games = await fetchArchiveGames(username, month, year);
+      allGames.push(...games);
     }
-
-    const allGames = [];
-
-    for (let username of usernames) {
-        const archives = await fetchUserArchives(username);
-
-        for (let archiveUrl of archives) {
-            const parts = archiveUrl.split('/');
-            const year = parts[parts.length - 2];
-            const month = parts[parts.length - 1];
-
-            const games = await fetchArchiveGames(username, month, year);
-            allGames.push(...games);
-        }
-    }
-
-    return allGames;
+  }
+  return allGames;
 }
 
-module.exports = {
-    fetchAllUsersGames
-};
+module.exports = { fetchAllUsersGames };
+
+
+//test run 
+//(async ()=>  console.log(await fetchAllUsersGames(['asdfasw4r3094uf0394uf0349uf', 'fffatty','ffattyy','ffatty','ffatty140','ffatty120','ffatty130','ffatty150','ffffattyyyy'])) )();
 
 
 /*
