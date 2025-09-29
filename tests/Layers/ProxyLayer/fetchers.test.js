@@ -1,5 +1,5 @@
 const { fetchAllUsersGames } = require("../../../src/Layers/ProxyLayer/Fetchers");
-const { isUserWhite, isUserBlack, isUserWinner, parsePgns } = require("../../../src/Layers/AnalysisLayer/BasicAnalysis")
+const { isUserWhite, isUserBlack, isUserWinner } = require("../../../src/Layers/AnalysisLayer/AnalysisUtils")
 const { } = require('../../../src/Layers/AnalysisLayer/Engine/EvaluationEngine')
 
 

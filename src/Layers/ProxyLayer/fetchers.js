@@ -12,7 +12,7 @@ async function verifyUserExists(username) {
 }
 
 async function fetchUserArchives(username) {
-  await sleep(25);
+  await sleep(30);
   const res = await axios.get(`https://api.chess.com/pub/player/${username}/games/archives`);
   return res.data.archives;
 }
@@ -38,15 +38,20 @@ async function fetchAllUsersGames(usernames) {
       allGames.push(...games);
     }
   }
-  return allGames;
+  // just the PGNs
+  const allGamePGNs = allGames.map(g => g.pgn.replaceAll("\n", '    '))
+  return allGamePGNs;
 }
 
 module.exports = { fetchAllUsersGames };
 
 
 //test run 
-//(async ()=>  console.log(await fetchAllUsersGames(['asdfasw4r3094uf0394uf0349uf', 'fffatty','ffattyy','ffatty','ffatty140','ffatty120','ffatty130','ffatty150','ffffattyyyy'])) )();
-
+(async ()=>  {
+  //let gs = await fetchAllUsersGames(['asdfasw4r3094uf0394uf0349uf', 'fffatty','ffattyy','ffatty','ffatty140','ffatty120','ffatty130','ffatty150','ffffattyyyy'])
+  //console.log(gs)
+}
+)();
 
 /*
 items in the array are like this:
