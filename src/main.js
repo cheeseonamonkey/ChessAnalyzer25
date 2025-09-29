@@ -27,7 +27,7 @@ const { Pipeline } = require("./Util/Pipeline");
         ]
     )
 
-    let out = mainPipeline.invoke(gs)
+    let out = await mainPipeline.invoke(gs)
     console.log(out)
     
 
