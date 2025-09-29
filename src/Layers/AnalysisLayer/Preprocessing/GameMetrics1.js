@@ -31,7 +31,45 @@ const getCastleType = (moveHistory, color) => {
 };
 
 
+
+const getWinner = (game) => {
+  // game is a chess.js instance
+  const headers = game.header();
+  const result = headers.Result;
+  
+  if (result === '1-0') {
+    return headers.White;
+  } else if (result === '0-1') {
+    return headers.Black;
+  } else if (result === '1/2-1/2') {
+    return 'Draw';
+  } else {
+    return 'Unknown';
+  }
+};
+
+
+const getWinnerColor = (game) => {
+  // game is a chess.js instance
+  const headers = game.header();
+  const result = headers.Result;
+  
+  if (result === '1-0') {
+    return 'White';
+  } else if (result === '0-1') {
+    return 'Black';
+  } else if (result === '1/2-1/2') {
+    return 'Draw';
+  } else {
+    return 'Unknown';
+  }
+};
+
+
+
 module.exports = {
   getTurnCastled,
-  getCastleType
+  getCastleType,
+  getWinner,
+  getWinnerColor
 }
