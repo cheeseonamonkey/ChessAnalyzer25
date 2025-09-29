@@ -1,14 +1,10 @@
 // GameMetrics1.js
-
-
     
-
-    //console.log(game.metrics)
-    
+//console.log(game.metrics)
 
 const getTurnCastled = (game, color) => {
-  const moveHistory = game.history()    
-  // moveHistory is the verbose history from chess.js: game.history({ verbose: true })
+  const moveHistory = game.history({ verbose: true }) // Add verbose: true
+  
   for (let i = 0; i < moveHistory.length; i++) {
     const move = moveHistory[i]
     if (move.color === color[0] && (move.flags.includes('k') || move.flags.includes('q'))) {
@@ -21,7 +17,8 @@ const getTurnCastled = (game, color) => {
 };
 
 const getCastleType = (game, color) => {
-  const moveHistory = game.history()
+  const moveHistory = game.history({ verbose: true }) // Add verbose: true
+  
   // Find the castling move for the specified color
   for (let i = 0; i < moveHistory.length; i++) {
     const move = moveHistory[i]
@@ -36,11 +33,9 @@ const getCastleType = (game, color) => {
   return 'None' // Never castled
 };
 
-
-
 const getWinner = (game) => {
   // game is a chess.js instance
-  const headers = game.getHeaders();
+  const headers = game.header();
   const result = headers.Result;
   
   if (result === '1-0') {
@@ -54,10 +49,9 @@ const getWinner = (game) => {
   }
 };
 
-
 const getWinnerColor = (game) => {
   // game is a chess.js instance
-  const headers = game.getHeaders();
+  const headers = game.header();
   const result = headers.Result;
   
   if (result === '1-0') {
@@ -70,8 +64,6 @@ const getWinnerColor = (game) => {
     return 'Unknown';
   }
 };
-
-
 
 module.exports = {
   getTurnCastled,

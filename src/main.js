@@ -27,8 +27,7 @@ const { Pipeline } = require("./Util/Pipeline");
                 data.forEach(game => {
 
                     // objective: 
-                    game.metrics['Winner'] = getWinner(game)
-                    game.metrics['WinnerColor'] = getWinnerColor(game)
+                    game.metrics['Winner'] = getWinnerColor(game)
     
                     // white:
                     game.metrics['White']['CastleTurn'] = getTurnCastled(game, 'white')
