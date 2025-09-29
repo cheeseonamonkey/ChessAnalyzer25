@@ -12,20 +12,20 @@ const parsePgns = (pgnsStrArr) => {
     let game = new Chess()
     game.loadPgn(pgn)
     if (game._header)
-      ['Event', 'Site', 'Round', 'Timezone', 'UTCDate', 'UTCTime', 'StartTime', 'Date'].forEach( h => delete game._header[h]);
+      ['Event', 'Site', 'Round', 'Timezone', 'UTCDate', 'UTCTime', 'StartTime', 'Date'].forEach(h => delete game._header[h]);
 
     // init metrics field
     game.metrics = {
-      Black: {},
-      White: {}
+      White: {},
+      Black: {}
     }
 
 
-   
-    
+
+
 
     //console.log(game.metrics)
-    
+
     gameArrOut.push(game)
   })
   return gameArrOut;

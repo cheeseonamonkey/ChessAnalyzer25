@@ -31,12 +31,12 @@ const { Pipeline } = require("./Util/Pipeline");
                     game.metrics['WinnerColor'] = getWinnerColor(game)
     
                     // white:
-                    game.metrics.White['CastleTurn'] = getTurnCastled(game, 'white')
-                    game.metrics.White['CastleType'] = getCastleType(game, 'white')
+                    game.metrics['White']['CastleTurn'] = getTurnCastled(game, 'white')
+                    game.metrics['White']['CastleType'] = getCastleType(game, 'white')
     
                     // black:
-                    game.metrics.Black['CastleTurn'] = getTurnCastled(game, 'black')
-                    game.metrics.Black['CastleType'] = getCastleType(game, 'black')
+                    game.metrics['Black']['CastleTurn'] = getTurnCastled(game, 'black')
+                    game.metrics['Black']['CastleType'] = getCastleType(game, 'black')
                 });
                 return data;
             },
@@ -49,7 +49,7 @@ const { Pipeline } = require("./Util/Pipeline");
     )
 
     let out = await mainPipeline.invoke([])
-    console.log(out)
+    console.log(JSON.stringify(out[0].metrics))
     
 
   }
