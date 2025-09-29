@@ -4,7 +4,7 @@ const { fetchAllUsersGames } = require("./Layers/ProxyLayer/Fetchers");
 const { Pipeline } = require("./Util/Pipeline");
 
 //test run 
-(async ()=>  {
+(async () => {
 
 
     console.log('Starting pipeline...');
@@ -13,7 +13,7 @@ const { Pipeline } = require("./Util/Pipeline");
         [
             async (_) => {
                 console.log("Fetching games...")
-                const games = await fetchAllUsersGames(['asdfasw4r3094uf0394uf0349uf', 'fffatty','ffattyy','ffatty','ffatty140','ffatty120','ffatty130','ffatty150','ffffattyyyy'])
+                const games = await fetchAllUsersGames(['ffffattyyyy'])
                 console.log(games.length + ' games fetched.');
                 return games;
             },
@@ -27,20 +27,30 @@ const { Pipeline } = require("./Util/Pipeline");
                 data.forEach(game => {
 
                     // objective: 
-                    game.metrics['Winner'] = getWinnerColor(game)
-    
+                    
+                    game.metrics['WinnerColor'] = getWinnerColor(game) //color won
+                    game.metrics['Winner'] = getWinner(game) //user won
                     // white:
                     game.metrics['White']['CastleTurn'] = getTurnCastled(game, 'white')
                     game.metrics['White']['CastleType'] = getCastleType(game, 'white')
-    
+
                     // black:
                     game.metrics['Black']['CastleTurn'] = getTurnCastled(game, 'black')
                     game.metrics['Black']['CastleType'] = getCastleType(game, 'black')
+
                 });
+
+               
+
+
                 return data;
             },
             (data) => {
-                
+
+                data.forEach( g=> {
+                    console.log(JSON.stringify(g.metrics))
+                });
+
                 return data;
             },
             //(data) => { return data; }
@@ -48,8 +58,8 @@ const { Pipeline } = require("./Util/Pipeline");
     )
 
     let out = await mainPipeline.invoke([])
-    console.log(out.map(it => it.metrics))
-    
+    //console.log(out.map(it => it.metrics))
 
-  }
-  )();
+
+}
+)();
