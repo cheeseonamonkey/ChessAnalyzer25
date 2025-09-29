@@ -13,7 +13,10 @@ const parsePgns = (pgnsStrArr) => {
       ['Event', 'Site', 'Round', 'Timezone', 'UTCDate', 'UTCTime', 'StartTime', 'Date'].forEach( h => delete game._header[h]);
 
     // init metrics field
-    game.metrics = {}
+    game.metrics = {
+      Black: {},
+      White: {}
+    }
 
 
     // Add castling analysis headers
@@ -31,7 +34,7 @@ const parsePgns = (pgnsStrArr) => {
     game.metrics.Black['CastleType'] = getCastleType(history, 'black')
     
 
-    console.log(Object.keys(game))
+    console.log(game.metrics)
     
     gameArrOut.push(game)
   })
