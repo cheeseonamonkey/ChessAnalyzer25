@@ -21,22 +21,7 @@ const parsePgns = (pgnsStrArr) => {
     }
 
 
-    // Add castling analysis headers
-    const history = game.history({ verbose: true })
-    
-    const whiteCastleTurn = getTurnCastled(history, 'white')
-    const blackCastleTurn = getTurnCastled(history, 'black')
-    
-
-
-    game.metrics['Winner'] = getWinner(game)
-    game.metrics['WinnerColor'] = getWinnerColor(game)
-
-    game.metrics.White['CastleTurn'] = whiteCastleTurn !== null ? whiteCastleTurn.toString() : 'None'
-    game.metrics.White['CastleType'] = getCastleType(history, 'white')
-    
-    game.metrics.Black['CastleTurn'] = blackCastleTurn !== null ? blackCastleTurn.toString() : 'None'
-    game.metrics.Black['CastleType'] = getCastleType(history, 'black')
+   
     
 
     //console.log(game.metrics)

@@ -12,6 +12,9 @@ class Pipeline {
     this.isValid = true;
   }
 
+
+  async invoke() { this.invoke([]) }
+
   async invoke(data) {
     if (!this.isValid)
       throw new Error('Pipeline has been invalidated after previous invocation');

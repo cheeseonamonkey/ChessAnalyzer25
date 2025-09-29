@@ -1,8 +1,13 @@
 // GameMetrics1.js
 
 
+    
 
-const getTurnCastled = (moveHistory, color) => {
+    //console.log(game.metrics)
+    
+
+const getTurnCastled = (game, color) => {
+  const moveHistory = game.history()
   // moveHistory is the verbose history from chess.js: game.history({ verbose: true })
   for (let i = 0; i < moveHistory.length; i++) {
     const move = moveHistory[i]
@@ -15,7 +20,8 @@ const getTurnCastled = (moveHistory, color) => {
   return null // Never castled
 };
 
-const getCastleType = (moveHistory, color) => {
+const getCastleType = (game, color) => {
+  const moveHistory = game.history()
   // Find the castling move for the specified color
   for (let i = 0; i < moveHistory.length; i++) {
     const move = moveHistory[i]
@@ -34,7 +40,7 @@ const getCastleType = (moveHistory, color) => {
 
 const getWinner = (game) => {
   // game is a chess.js instance
-  const headers = game.header();
+  const headers = game.getHeaders();
   const result = headers.Result;
   
   if (result === '1-0') {
@@ -51,7 +57,7 @@ const getWinner = (game) => {
 
 const getWinnerColor = (game) => {
   // game is a chess.js instance
-  const headers = game.header();
+  const headers = game.getHeaders();
   const result = headers.Result;
   
   if (result === '1-0') {
