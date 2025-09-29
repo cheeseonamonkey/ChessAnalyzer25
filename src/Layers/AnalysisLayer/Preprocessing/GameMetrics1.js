@@ -1,73 +1,40 @@
 // GameMetrics1.js
-    
-//console.log(game.metrics)
 
-const getTurnCastled = (game, color) => {
-  const moveHistory = game.history({ verbose: true }) // Add verbose: true
+const getTurnCastled = (game, { color = null, user = null } = {}) => {
+  const moveHistory = game.history({ verbose: true });
+  const targetColor = color || (user === game.header().White ? 'w' : 'b');
   
   for (let i = 0; i < moveHistory.length; i++) {
-    const move = moveHistory[i]
-    if (move.color === color[0] && (move.flags.includes('k') || move.flags.includes('q'))) {
-      // Return the move number (1-indexed)
-      // Each full turn has 2 moves (white and black), so divide by 2 and round up
-      return Math.floor(i / 2) + 1
+    const move = moveHistory[i];
+    if (move.color === targetColor[0] && (move.flags.includes('k') || move.flags.includes('q'))) {
+      return Math.floor(i / 2) + 1;
     }
   }
-  return null // Never castled
+  return null;
 };
 
-const getCastleType = (game, color) => {
-  const moveHistory = game.history({ verbose: true }) // Add verbose: true
+const getCastleType = (game, { color = null, user = null } = {}) => {
+  const moveHistory = game.history({ verbose: true });
+  const targetColor = color || (user === game.header().White ? 'w' : 'b');
   
-  // Find the castling move for the specified color
   for (let i = 0; i < moveHistory.length; i++) {
-    const move = moveHistory[i]
-    if (move.color === color[0]) {
-      if (move.flags.includes('k')) {
-        return 'Kingside' // O-O
-      } else if (move.flags.includes('q')) {
-        return 'Queenside' // O-O-O
-      }
+    const move = moveHistory[i];
+    if (move.color === targetColor[0]) {
+      return move.flags.includes('k') ? 'Kingside' : move.flags.includes('q') ? 'Queenside' : null;
     }
   }
-  return 'None' // Never castled
-};
-
-const getWinner = (game) => {
-  // game is a chess.js instance
-  const headers = game.header();
-  const result = headers.Result;
-  
-  if (result === '1-0') {
-    return headers.White;
-  } else if (result === '0-1') {
-    return headers.Black;
-  } else if (result === '1/2-1/2') {
-    return 'Draw';
-  } else {
-    return 'Unknown';
-  }
+  return null;
 };
 
 const getWinnerColor = (game) => {
-  // game is a chess.js instance
-  const headers = game.header();
-  const result = headers.Result;
-  
-  if (result === '1-0') {
-    return 'White';
-  } else if (result === '0-1') {
-    return 'Black';
-  } else if (result === '1/2-1/2') {
-    return 'Draw';
-  } else {
-    return 'Unknown';
-  }
+  const result = game.header().Result;
+  return result === '1-0' ? 'White' : result === '0-1' ? 'Black' : result === '1/2-1/2' ? 'Draw' : 'Unknown';
 };
 
-module.exports = {
-  getTurnCastled,
-  getCastleType,
-  getWinner,
-  getWinnerColor
-}
+const getWinner = (game) => {
+  const winnerColor = getWinnerColor(game);
+  const headers = game.header();
+  return winnerColor === 'White' ? headers.White : winnerColor === 'Black' ? headers.Black : winnerColor;
+};
+
+module.exports = { getTurnCastled, getCastleType, getWinner, getWinnerColor };

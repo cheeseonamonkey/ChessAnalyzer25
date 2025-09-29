@@ -6,27 +6,26 @@ const { getTurnCastled, getCastleType, getWinner, getWinnerColor } = require('./
 
 const parsePgns = (pgnsStrArr) => {
   let gameArrOut = []
-  pgnsStrArr.forEach(pgn => {
+  pgnsStrArr.forEach((pgn, index) => {
+    try {
+      // load game from PGN string:
+      let game = new Chess()
+      game.loadPgn(pgn)
+      if (game._header)
+        ['Event', 'Site', 'Round', 'Timezone', 'UTCDate', 'UTCTime', 'StartTime', 'Date'].forEach(h => delete game._header[h]);
 
-    // load game from PGN string:
-    let game = new Chess()
-    game.loadPgn(pgn)
-    if (game._header)
-      ['Event', 'Site', 'Round', 'Timezone', 'UTCDate', 'UTCTime', 'StartTime', 'Date'].forEach(h => delete game._header[h]);
+      // init metrics field
+      game.metrics = {
+        White: {},
+        Black: {}
+      }
 
-    // init metrics field
-    game.metrics = {
-      White: {},
-      Black: {}
+      gameArrOut.push(game)
+    } catch (error) {
+      console.error(`Failed to parse PGN at index ${index}:`, error.message)
+      console.error('PGN content:', pgn.substring(0, 200) + '...') // Log first 200 chars
+      // Continue to next PGN
     }
-
-
-
-
-
-    //console.log(game.metrics)
-
-    gameArrOut.push(game)
   })
   return gameArrOut;
 };
@@ -34,6 +33,9 @@ const parsePgns = (pgnsStrArr) => {
 module.exports = {
   parsePgns
 }
+
+
+
 
 
 
