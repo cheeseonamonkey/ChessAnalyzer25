@@ -49,7 +49,7 @@ const { Pipeline } = require("./Util/Pipeline");
     )
 
     let out = await mainPipeline.invoke([])
-    console.log(JSON.stringify(out[0].metrics))
+    console.log(out.map(it => it.metrics))
     
 
   }

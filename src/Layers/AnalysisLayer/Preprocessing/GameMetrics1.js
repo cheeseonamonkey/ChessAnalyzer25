@@ -7,7 +7,7 @@
     
 
 const getTurnCastled = (game, color) => {
-  const moveHistory = game.history()
+  const moveHistory = game.history()    
   // moveHistory is the verbose history from chess.js: game.history({ verbose: true })
   for (let i = 0; i < moveHistory.length; i++) {
     const move = moveHistory[i]
