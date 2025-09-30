@@ -7,7 +7,7 @@ async function verifyUserExists(username) {
     response = await axios.get(`https://api.chess.com/pub/player/${username}/games/archives`);
     return true;
   } catch {
-    console.warn("Username not exists: " + username)
+    console.info("    Username not exists: " + username)
     return false;
   }
 }
@@ -29,8 +29,11 @@ async function fetchAllUsersGames(usernames) {
 
   const allGames = [];
   for (const username of usernames) {
+
     if (!(await verifyUserExists(username)))
         continue;
+    
+    console.info('  Fetching games for: username...');
 
     const archives = await fetchUserArchives(username);
     for (const archiveUrl of archives) {
@@ -38,6 +41,7 @@ async function fetchAllUsersGames(usernames) {
       const games = await fetchArchiveGames(username, month, year);
       allGames.push(...games);
     }
+    console.info('    ' + allGames.length + ' games found.')
   }
   // just the PGNs
   const allGamePGNs = allGames.map(g => g.pgn.replaceAll("\n", '    '))
