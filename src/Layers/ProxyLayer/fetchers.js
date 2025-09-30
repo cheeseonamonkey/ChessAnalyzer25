@@ -33,7 +33,7 @@ async function fetchAllUsersGames(usernames) {
     if (!(await verifyUserExists(username)))
         continue;
     
-    console.info('  Fetching games for: username...');
+    console.info(`  Fetching games for: ${username}...`);
 
     const archives = await fetchUserArchives(username);
     for (const archiveUrl of archives) {
