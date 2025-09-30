@@ -4,9 +4,10 @@ const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
 async function verifyUserExists(username) {
   try {
-    await axios.get(`https://api.chess.com/pub/player/${username}/games/2025/09`);
+    response = await axios.get(`https://api.chess.com/pub/player/${username}/games/archives`);
     return true;
   } catch {
+    console.warn("Username not exists: " + username)
     return false;
   }
 }

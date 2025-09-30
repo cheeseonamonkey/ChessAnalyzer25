@@ -19,12 +19,12 @@ const parsePgns = (pgnsStrArr) => {
         White: {},
         Black: {}
       }
-
+      
       gameArrOut.push(game)
     } catch (error) {
-      console.error(`Failed to parse PGN at index ${index}:`, error.message)
-      console.error('PGN content:', pgn.substring(0, 200) + '...') // Log first 200 chars
-      // Continue to next PGN
+      console.error(`Failed to parse PGN at index ${index}:`, error.message) // i've only seen this happen due to users that have blocked you?
+      console.error('PGN content:', pgn.substring(0, 200) + '...') 
+      // continue to next PGN
     }
   })
   return gameArrOut;

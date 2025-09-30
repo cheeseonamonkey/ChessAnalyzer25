@@ -13,7 +13,9 @@ class Pipeline {
   }
 
 
-  async invoke() { this.invoke([]) }
+  async invoke() {
+    this.invoke([])
+  }
 
   async invoke(data) {
     if (!this.isValid)
