@@ -1,60 +1,60 @@
 // main.js
 
-const { initGameInsights1 } = require("./Layers/2_AnalysisLayer/1_Preprocessing/GameInsights1");
-const { getTurnCastled, getCastleType, getWinner, getWinnerColor, getMoveCount, getCaptureCount, getMovesByColor, getCapturesByColor, getCheckCount, getChecksByColor, getFirstCaptureTurn, getPromotionCount, getPromotionsByColor, hasCastled, initGameMetrics1 } = require("./Layers/2_AnalysisLayer/1_Preprocessing/GameMetrics1");
+const { initGameInsights1, analyzeWinRates } = require("./Layers/2_AnalysisLayer/1_Preprocessing/GameInsights1");
+const { initGameMetrics1 } = require("./Layers/2_AnalysisLayer/1_Preprocessing/GameMetrics1");
 const { parsePgns } = require("./Layers/2_AnalysisLayer/1_Preprocessing/Parsing");
 const { fetchAllUsersGames } = require("./Layers/1_ProxyLayer/Fetchers");
 const { Pipeline } = require("./Util/Pipeline");
 
-//test run 
 (async () => {
-
-
     console.log('Starting pipeline...');
 
-    //
-    const usernames =   ['ffffattyyyy'] // ['ffatty190','ffatty200','ffatty180','ffatty170','ffatty160','ffatty150','ffatty130','ffatty120','ffatty110','ffatty110','ffatty100','ffattyyyy','ffffatty','fffatty','fffattyy','ffattyy','fffattyy','ffatty','ffffattyyyy']
+    const usernames = ['ffffattyyyy'];
 
-    const mainPipeline = new Pipeline('Root',
-        [
-            async () => {
-                console.log("Fetching games...")
-                const games = await fetchAllUsersGames(usernames)
+    const mainPipeline = new Pipeline('Root', [
+        async () => {
+            console.log("Fetching games...")
+            const games = await fetchAllUsersGames(usernames);
+            console.log(games.length + ' games fetched.');
+            return games;
+        },
+        (arr) => {
+            console.log("Parsing PGNs...");
+            return parsePgns(arr);
+        },
+        (arr) => {
+            console.log("Getting GameMetrics1...");
+            arr.forEach(game => initGameMetrics1(game));
+            return arr;
+        },
+        (arr) => {
+            //console.log("Getting GameInsights1...");
+            //arr.forEach(game => initGameInsights1(game, usernames));
+            return arr;
+        },
+        (arr) => {
+            console.log("\n=== WIN RATE ANALYSIS ===\n");
+            const winRates = analyzeWinRates(arr, usernames);
+            
+            usernames.forEach(user => {
+                const s = winRates[user];
+                if (s.totalGames === 0) {
+                    console.log(`${user}: No games found`);
+                    return;
+                }
                 
-                console.log(games.length + ' games fetched.');
-                return games;
-            },
-            (arr) => {
-                console.log("Parsing PGNs...")
-                const parsed = parsePgns(arr);
-                return parsed;
-            },
-            (arr) => {
-                console.log("Getting GameMetrics1...")
-                arr.forEach(game => initGameMetrics1(game) );
-                return arr;
-            },
-            (arr) => {
-                console.log("Getting GameInsights1...");
-                arr.forEach(game => initGameInsights1(game, usernames) );
-                return arr;
-            },
-            (arr) => {
-                console.log(arr[1].metrics)
-                console.log(arr[3].metrics)
-                console.log(arr[5].metrics)
-                console.log(arr[9].metrics)
-                console.log(arr[7].metrics)
-                return data;
-            },
-            //(arr) => { return data; },
-            //(arr) => { return data; },
-        ]
-    )
+                console.log(`${user}:`);
+                console.log(`  Total Games: ${s.totalGames}`);
+                console.log(`  Overall: ${s.wins}W / ${s.losses}L / ${s.draws}D (${s.winRate}% win rate)`);
+                console.log(`  As White: ${s.asWhite.wins}/${s.asWhite.games} (${s.asWhite.winRate}%)`);
+                console.log(`  As Black: ${s.asBlack.wins}/${s.asBlack.games} (${s.asBlack.winRate}%)`);
+                console.log();
+            });
+            
+            return arr;
+        }
+    ]);
 
-    let out = await mainPipeline.invoke()
-    //console.log(out.map(it => it.metrics))
+    await mainPipeline.invoke();
+})();
 
-
-}
-)();
