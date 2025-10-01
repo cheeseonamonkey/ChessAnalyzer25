@@ -33,7 +33,7 @@ getFirstCaptureTurn(game, color)
 // turn number a color put oppenent in check
 getFirstCheck(game,color)
 
-
+// you are here
 
 
 /**
