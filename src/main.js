@@ -37,8 +37,8 @@ const { Pipeline } = require("./Util/Pipeline");
                 console.log("Getting GameInsights1...");
                 arr.forEach(game => initGameInsights1(game, usernames) );
                 
-                console.log(arr[0].metrics)
-                console.log(arr[0].insights)
+                console.log(arr[5].metrics)
+                console.log(arr[5].insights)
                 
                 return arr;
             }

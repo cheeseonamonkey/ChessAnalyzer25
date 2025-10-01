@@ -1,60 +1,44 @@
 // GameMetrics1.js
-const resolveColor = (game, { color = null, user = null } = {}) => {
+
+// convert between player color vs username - helper 
+const resolveColor = (game, { color = null, user = null }) => {
   if (color) return color[0].toLowerCase();
   if (user) return user === game.header().White ? 'w' : 'b';
   return null;
 };
 
-const getMovesByColor = (game, options = {}) => {
+
+// get all moves made by one color (white or black) - helper
+const getAllMovesByColor = (game, color) => {
   const targetColor = resolveColor(game, options);
   return game.history({ verbose: true }).filter(m => m.color === targetColor);
 };
 
-const getTurnCastled = (game, options = {}) => {
-  const moves = game.history({ verbose: true });
-  const targetColor = resolveColor(game, options);
-  const castleMove = moves.findIndex(m => m.color === targetColor && /[kq]/.test(m.flags));
-  return castleMove === -1 ? null : Math.floor(castleMove / 2) + 1;
+// did a color castle this game? - helper
+const didCastle = (game, color)
+
+
+// turn number a color castled (or null) in this game
+const getTurnCastled = (game, color) => {
+};
+// type of castle (or null) a color did in this game (O-O-O vs O-O)
+const getCastleType = (game, color) => {
 };
 
-const getCastleType = (game, options = {}) => {
-  const move = getMovesByColor(game, options).find(m => /[kq]/.test(m.flags));
-  return move ? (move.flags.includes('k') ? 'Kingside' : 'Queenside') : null;
-};
+// more:
+// first turn a color moved their queen
+getTurnQueenTapped(game, color)
+// first turn a color got a capture
+getFirstCaptureTurn(game, color)
+// turn number a color put oppenent in check
+getFirstCheck(game,color)
 
-const getWinnerColor = (game) => {
-  const r = game.header().Result;
-  return r === '1-0' ? 'White' : r === '0-1' ? 'Black' : r === '1/2-1/2' ? 'Draw' : 'Unknown';
-};
 
-const getWinner = (game) => {
-  const wc = getWinnerColor(game);
-  const h = game.header();
-  return wc === 'White' ? h.White : wc === 'Black' ? h.Black : wc;
-};
 
-const getCapturesByColor = (game, options = {}) => 
-  getMovesByColor(game, options).filter(m => /[ce]/.test(m.flags));
-
-const getChecksByColor = (game, options = {}) => 
-  getMovesByColor(game, options).filter(m => m.san.includes('+'));
-
-const getPromotionsByColor = (game, options = {}) => 
-  getMovesByColor(game, options).filter(m => m.flags.includes('p'));
-
-const getFirstCaptureTurn = (game, options = {}) => {
-  const moves = game.history({ verbose: true });
-  const targetColor = resolveColor(game, options);
-  const captureIdx = moves.findIndex(m => m.color === targetColor && /[ce]/.test(m.flags));
-  return captureIdx === -1 ? null : Math.floor(captureIdx / 2) + 1;
-};
-
-const hasCastled = (game, options = {}) => getTurnCastled(game, options) !== null;
 
 /**
- * Build metrics and attach them to `game.insights`.
+ * Build metrics and attach them to `game.metrics`.
  * @param {Object} game - single chess game data pipeline reference
- * @param {Object} game.metrics - store computed game metrics
  * @returns {void} void (modifies the `game.metrics` object in-place)
  */
 function initGameMetrics1(game) {
@@ -80,8 +64,8 @@ module.exports = {
   getCastleType,
   getWinner,
   getWinnerColor,
-  getMovesByColor,
-  getMoveCount: (game, opts = {}) => getMovesByColor(game, opts).length,
+  getMovesByColor: getAllMovesByColor,
+  getMoveCount: (game, opts = {}) => getAllMovesByColor(game, opts).length,
   getCapturesByColor,
   getCaptureCount: (game, opts = {}) => getCapturesByColor(game, opts).length,
   getFirstCaptureTurn,
@@ -91,5 +75,7 @@ module.exports = {
   getPromotionCount: (game, opts = {}) => getPromotionsByColor(game, opts).length,
   hasCastled,
 
-  initGameMetrics1
+  initGameMetrics1,
+
+  resolveColor
 };
