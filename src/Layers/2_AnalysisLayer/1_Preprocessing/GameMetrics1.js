@@ -62,18 +62,11 @@ function initGameMetrics1(game) {
 module.exports = {
   getTurnCastled,
   getCastleType,
-  getWinner,
-  getWinnerColor,
   getMovesByColor: getAllMovesByColor,
   getMoveCount: (game, opts = {}) => getAllMovesByColor(game, opts).length,
-  getCapturesByColor,
   getCaptureCount: (game, opts = {}) => getCapturesByColor(game, opts).length,
-  getFirstCaptureTurn,
-  getChecksByColor,
   getCheckCount: (game, opts = {}) => getChecksByColor(game, opts).length,
-  getPromotionsByColor,
   getPromotionCount: (game, opts = {}) => getPromotionsByColor(game, opts).length,
-  hasCastled,
 
   initGameMetrics1,
 
