@@ -28,8 +28,8 @@ const { Pipeline } = require("./Util/Pipeline");
             return arr;
         },
         (arr) => {
-            //console.log("Getting GameInsights1...");
-            //arr.forEach(game => initGameInsights1(game, usernames));
+            console.log("Getting GameInsights1...");
+            arr.forEach(game => initGameInsights1(game, usernames));
             return arr;
         },
         (arr) => {
@@ -57,4 +57,3 @@ const { Pipeline } = require("./Util/Pipeline");
 
     await mainPipeline.invoke();
 })();
-
