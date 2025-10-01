@@ -1,5 +1,8 @@
 // GameMetrics1.js
 
+// everything here will be vs a specific player color 
+
+
 // convert between player color vs username - helper 
 const resolveColor = (game, { color = null, user = null }) => {
   if (color) return color[0].toLowerCase();
@@ -70,5 +73,6 @@ module.exports = {
 
   initGameMetrics1,
 
-  resolveColor
+  resolveColor,
+  getAllMovesByColor
 };
