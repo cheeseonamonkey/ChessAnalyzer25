@@ -9,54 +9,57 @@ const initGameInsights1 = (game, usernames) => {
     usernames.some(u => username.toLowerCase() === u.toLowerCase());
 
   const { White, Black } = game.header();
+  const moves = game.history({ verbose: true });
   
-  let userData = null;
-  if (isTargetUser(White)) {
-    userData = {
-      color: 'White',
-      metrics: game.metrics.White,
-      won: game.metrics.WinnerColor === 'White',
-      draw: game.metrics.WinnerColor === 'Draw'
-    };
-  } else if (isTargetUser(Black)) {
-    userData = {
-      color: 'Black',
-      metrics: game.metrics.Black,
-      won: game.metrics.WinnerColor === 'Black',
-      draw: game.metrics.WinnerColor === 'Draw'
-    };
-  }
+  // Helper to get first queen move turn
+  const getQueenTapTurn = (color) => {
+    const idx = moves.findIndex(m => m.color === color && m.piece === 'q');
+    return idx === -1 ? null : Math.floor(idx / 2) + 1;
+  };
 
-  if (!userData) {
+  // Build color-specific data
+  const buildColorData = (color, username, metrics) => ({
+    player: username,
+    color: color === 'w' ? 'White' : 'Black',
+    
+    // Castling
+    castleTurn: metrics.CastleTurn,
+    castleType: metrics.CastleType || 'None',
+    castleTiming: metrics.CastleTurn ? 
+      (metrics.CastleTurn <= 5 ? 'Early' : metrics.CastleTurn <= 10 ? 'Mid' : 'Late') : 'None',
+    
+    // Captures
+    firstCaptureTurn: metrics.FirstCaptureTurn,
+    captureCount: moves.filter(m => m.color === color && /[ce]/.test(m.flags)).length,
+    
+    // Queen
+    queenTapTurn: getQueenTapTurn(color),
+    queenTapTiming: (() => {
+      const turn = getQueenTapTurn(color);
+      return turn ? (turn <= 5 ? 'Early' : turn <= 10 ? 'Mid' : 'Late') : 'None';
+    })(),
+    
+    // Checks & promotions
+    checkCount: moves.filter(m => m.color === color && m.san.includes('+')).length,
+    promotionCount: moves.filter(m => m.color === color && m.flags.includes('p')).length,
+    
+    // Result
+    won: game.metrics.WinnerColor === (color === 'w' ? 'White' : 'Black'),
+    draw: game.metrics.WinnerColor === 'Draw'
+  });
+
+  // Determine which color(s) the target user played
+  const whiteIsTarget = isTargetUser(White);
+  const blackIsTarget = isTargetUser(Black);
+
+  if (!whiteIsTarget && !blackIsTarget) {
     game.insights = null;
     return;
   }
 
-  const m = userData.metrics;
-
   game.insights = {
-    player: userData.color === 'White' ? White : Black,
-    color: userData.color,
-    result: userData.won ? 'Win' : (userData.draw ? 'Draw' : 'Loss'),
-    
-    hasCastled: m.HasCastled,
-    castleType: m.CastleType || 'None',
-    castleTurn: m.CastleTurn || null,
-    castleTiming: m.CastleTurn ? (m.CastleTurn <= 5 ? 'Early' : m.CastleTurn <= 10 ? 'Mid' : 'Late') : 'None',
-    
-    captureCount: m.CaptureCount,
-    captureGroup: m.CaptureCount === 0 ? 'None' : m.CaptureCount <= 3 ? '1-3' : m.CaptureCount <= 6 ? '4-6' : '7+',
-    firstCaptureTurn: m.FirstCaptureTurn || null,
-    firstCaptureTiming: m.FirstCaptureTurn ? (m.FirstCaptureTurn <= 5 ? 'Early' : m.FirstCaptureTurn <= 10 ? 'Mid' : 'Late') : 'None',
-    
-    checkCount: m.CheckCount,
-    checkGroup: m.CheckCount === 0 ? 'None' : m.CheckCount <= 2 ? '1-2' : m.CheckCount <= 5 ? '3-5' : '6+',
-    
-    promotionCount: m.PromotionCount,
-    hadPromotion: m.PromotionCount > 0,
-    
-    moveCount: m.MoveCount,
-    gameLength: m.MoveCount < 20 ? 'Short' : m.MoveCount <= 40 ? 'Medium' : 'Long'
+    white: whiteIsTarget ? buildColorData('w', White, game.metrics.White) : null,
+    black: blackIsTarget ? buildColorData('b', Black, game.metrics.Black) : null
   };
 };
 

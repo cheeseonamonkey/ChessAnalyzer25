@@ -12,33 +12,39 @@ const { Pipeline } = require("./Util/Pipeline");
 
     console.log('Starting pipeline...');
 
+    const usernames = ['ffffattyyyy']  // ['ffatty190','ffatty200','ffatty180','ffatty170','ffatty160','ffatty150','ffatty130','ffatty120','ffatty110','ffatty110','ffatty100','ffattyyyy','ffffatty','fffatty','fffattyy','ffattyy','fffattyy','ffatty','ffffattyyyy']
+
     const mainPipeline = new Pipeline('Root',
         [
-            async (_) => {
+            async () => {
                 console.log("Fetching games...")
-                const games = await fetchAllUsersGames(['ffffattyyyy'])
-                //const games = await fetchAllUsersGames(['ffatty190','ffatty200','ffatty180','ffatty170','ffatty160','ffatty150','ffatty130','ffatty120','ffatty110','ffatty110','ffatty100','ffattyyyy','ffffatty','fffatty','fffattyy','ffattyy','fffattyy','ffatty','ffffattyyyy'])
+                const games = await fetchAllUsersGames(usernames)
+                
                 console.log(games.length + ' games fetched.');
                 return games;
             },
-            (data) => {
+            (arr) => {
                 console.log("Parsing PGNs...")
-                const parsed = parsePgns(data);
+                const parsed = parsePgns(arr);
                 return parsed;
             },
-            (data) => {
+            (arr) => {
                 console.log("Getting GameMetrics1...")
-                data.forEach(game => initGameMetrics1(game) );
-                return data;
+                arr.forEach(game => initGameMetrics1(game) );
+                return arr;
             },
-            (data) => {
+            (arr) => {
                 console.log("Getting GameInsights1...");
-                data.forEach(game => initGameInsights1(game) );
-                return data;
+                arr.forEach(game => initGameInsights1(game, usernames) );
+                
+                console.log(arr[0].metrics)
+                console.log(arr[0].insights)
+                
+                return arr;
             }
-            //(data) => { return data; },
-            //(data) => { return data; },
-            //(data) => { return data; },
+            //(arr) => { return data; },
+            //(arr) => { return data; },
+            //(arr) => { return data; },
         ]
     )
 
