@@ -17,8 +17,8 @@ The pipeline passes a single, mutable reference though several broad layers with
 The pipeline is *backwards-dependant*, meaning:
 - data moves in only one direction
 - latter layers utilize former layers
-- earlier pipeline steps may not be easily ordered/changed
-- testing may require running previous steps *(or mock data)*
+- pipeline steps may not be easily ordered/changed
+- testing may get annoying, necessitating running previous steps *(or hard-coding mock data)*
 
 
 |  | |
