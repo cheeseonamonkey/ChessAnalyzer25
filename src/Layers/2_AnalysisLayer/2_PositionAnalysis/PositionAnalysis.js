@@ -1,6 +1,6 @@
 // PositionAnalysis.js
 
-const { evaluateAggregate } = require('./Engine/EvaluationEngine');
+const { evaluateAggregate } = require('../EvaluationEngine');
 
 const analyzePosition = (fen, moveNumber, color) => {
   const eval = evaluateAggregate(fen);

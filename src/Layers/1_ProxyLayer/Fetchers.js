@@ -1,5 +1,4 @@
 const axios = require('axios');
-
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
 async function verifyUserExists(username) {
@@ -19,25 +18,28 @@ async function fetchUserArchives(username) {
 }
 
 async function fetchArchiveGames(username, month, year) {
-  await sleep(5);
+  await sleep(6);
   const res = await axios.get(`https://api.chess.com/pub/player/${username}/games/${year}/${month}`);
   return res.data.games;
 }
 
 async function fetchAllUsersGames(usernames) {
   if (!Array.isArray(usernames) || usernames.length === 0) return [];
-
   const allGames = [];
+  const now = new Date();
+  
   for (const username of usernames) {
-
     if (!(await verifyUserExists(username)))
         continue;
     
     console.info(`  Fetching games for: ${username}...`);
-
     const archives = await fetchUserArchives(username);
     for (const archiveUrl of archives) {
       const [year, month] = archiveUrl.split('/').slice(-2);
+      // Skip future months
+      const archiveDate = new Date(year, month - 1);
+      if (archiveDate > now) continue;
+      
       const games = await fetchArchiveGames(username, month, year);
       allGames.push(...games);
     }

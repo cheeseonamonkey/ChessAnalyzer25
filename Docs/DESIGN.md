@@ -1,5 +1,6 @@
-Essentially it is a big data transformation pipeline.
+# Design
 
+Essentially this is a big data transformation pipeline.
 
 The pipeline passes a single, mutable reference though several broad layers with strong separations of concern:
 
@@ -15,23 +16,55 @@ The pipeline passes a single, mutable reference though several broad layers with
 
 
 The pipeline is *backwards-dependant*, meaning:
-- data moves in only one direction
+- data flows in one direction only
 - latter layers utilize former layers
 - pipeline steps may not be easily ordered/changed
 - testing may get annoying, necessitating running previous steps *(or hard-coding mock data)*
 
-
+### Terms:
 |  | |
 |------|------------|
 | Metric | Any piece of data derived from the source data |
 | Vector | Chronologically-related list of metrics *(a type of metric itself)* |
-| Insight | Final data, derived from metrics; transformed/compiled into meaningful, useful, or interesting information and visualizations. |
+| Insight | Final data, derived from metrics; meaningful/useful/interesting information - usually crosses one or more metrics vs. a specific player. |
 | Objective metric | Neutral aspect of the position |
 | Subjective metric | Must include user perspective |
 
 
+## Classes
+
+### Pipeline
+Utility class for chronological data steps:
+
+- Sequential execution of pipeline steps, in an array-based flow
+- Passes a single mutable reference through each step in the pipeline
+- Sub-pipelines can be nested into tree structures, with functions as leaf nodes
+- Passes parameter to the next step
+- Step invalidates after invoking
 
 
+**Usage:**
+```javascript
+const subPipeline = new Pipeline('sub pipeline', [
+	(arr) => { return arr; }  // 2nd pipeline step
+]);
+const rootPipeline = new Pipeline('root pipeline', [
+	(arr) => { return arr; }, // 1st pipeline step
+	subPipeline,    		 
+	(arr) => { return arr; }, // 3rd pipeline step
+]);
+
+// execute the pipeline
+let data = [1,2,3,4]
+const result = await pipeline.invoke(data);
+
+```
+
+
+
+<br/><br/><br/><br/><br/>
+
+##### 
 
 Data pipeline rough draft:
 
@@ -101,7 +134,7 @@ Data pipeline rough draft:
 			3. Game ACPL
 			4. Winner
 		4. Sharpness
-		5. Turn number of first occurrences *(i.e queen tapped, king moved, etc.*
+		5. Turn number of first occurrences *(i.e queen tapped, king moved, etc.)*
 	4. User metrics *(3D data)*
 		1. *(ability to cross any 2 metrics? query language?)*
 		2. User ACPL avgs
@@ -115,5 +148,4 @@ Data pipeline rough draft:
 
 ### Credits & Thanks
 - Sunfish _(I heavily modified their chess engine into evaluation functions & converted it to JS)_
-
 

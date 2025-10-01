@@ -51,6 +51,30 @@ const getFirstCaptureTurn = (game, options = {}) => {
 
 const hasCastled = (game, options = {}) => getTurnCastled(game, options) !== null;
 
+/**
+ * Build metrics and attach them to `game.insights`.
+ * @param {Object} game - single chess game data pipeline reference
+ * @param {Object} game.metrics - store computed game metrics
+ * @returns {void} void (modifies the `game.metrics` object in-place)
+ */
+function initGameMetrics1(game) {
+  // objective: 
+  game.metrics['WinnerColor'] = getWinnerColor(game);
+  game.metrics['Winner'] = getWinner(game);
+
+  // white:
+  game.metrics['White']['CastleTurn'] = getTurnCastled(game, { color: 'white' });
+  game.metrics['White']['CastleType'] = getCastleType(game, { color: 'white' });
+  game.metrics['White']['FirstCaptureTurn'] = getFirstCaptureTurn(game, { color: 'white' });
+  game.metrics['White']['HasCastled'] = hasCastled(game, { color: 'white' });
+
+  // black:
+  game.metrics['Black']['CastleTurn'] = getTurnCastled(game, { color: 'black' });
+  game.metrics['Black']['CastleType'] = getCastleType(game, { color: 'black' });
+  game.metrics['Black']['FirstCaptureTurn'] = getFirstCaptureTurn(game, { color: 'black' });
+  game.metrics['Black']['HasCastled'] = hasCastled(game, { color: 'black' });
+}
+
 module.exports = {
   getTurnCastled,
   getCastleType,
@@ -65,5 +89,7 @@ module.exports = {
   getCheckCount: (game, opts = {}) => getChecksByColor(game, opts).length,
   getPromotionsByColor,
   getPromotionCount: (game, opts = {}) => getPromotionsByColor(game, opts).length,
-  hasCastled
+  hasCastled,
+
+  initGameMetrics1
 };
