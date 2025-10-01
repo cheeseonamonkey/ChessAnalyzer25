@@ -25,8 +25,10 @@ The pipeline is *backwards-dependant*, meaning:
 |------|------------|
 | Metric | Any piece of data derived from the source data |
 | Vector | Chronologically-related list of metrics *(a type of metric itself)* |
+| Insight | Final data, derived from metrics; transformed/compiled into meaningful, useful, or interesting information and visualizations. |
 | Objective metric | Neutral aspect of the position |
 | Subjective metric | Must include user perspective |
+
 
 
 

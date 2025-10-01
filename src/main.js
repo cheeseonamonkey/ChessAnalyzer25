@@ -1,9 +1,9 @@
 // main.js
 
-const { getInsights } = require("./Layers/AnalysisLayer/Preprocessing/GameInsights1");
-const { getTurnCastled, getCastleType, getWinner, getWinnerColor, getMoveCount, getCaptureCount, getMovesByColor, getCapturesByColor, getCheckCount, getChecksByColor, getFirstCaptureTurn, getPromotionCount, getPromotionsByColor, hasCastled } = require("./Layers/AnalysisLayer/Preprocessing/GameMetrics1");
-const { parsePgns } = require("./Layers/AnalysisLayer/Preprocessing/Parsing");
-const { fetchAllUsersGames } = require("./Layers/ProxyLayer/Fetchers");
+const { getInsights } = require("./Layers/2_AnalysisLayer/1_Preprocessing/GameInsights1");
+const { getTurnCastled, getCastleType, getWinner, getWinnerColor, getMoveCount, getCaptureCount, getMovesByColor, getCapturesByColor, getCheckCount, getChecksByColor, getFirstCaptureTurn, getPromotionCount, getPromotionsByColor, hasCastled } = require("./Layers/2_AnalysisLayer/1_Preprocessing/GameMetrics1");
+const { parsePgns } = require("./Layers/2_AnalysisLayer/1_Preprocessing/Parsing");
+const { fetchAllUsersGames } = require("./Layers/1_ProxyLayer/Fetchers");
 const { Pipeline } = require("./Util/Pipeline");
 
 //test run 
