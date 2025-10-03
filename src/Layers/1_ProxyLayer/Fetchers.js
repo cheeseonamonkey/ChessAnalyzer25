@@ -33,6 +33,8 @@ async function fetchAllUsersGames(usernames) {
         continue;
     
     console.info(`  Fetching games for: ${username}...`);
+    const userGameCount = allGames.length; // Track count before this user
+    
     const archives = await fetchUserArchives(username);
     for (const archiveUrl of archives) {
       const [year, month] = archiveUrl.split('/').slice(-2);
@@ -43,8 +45,11 @@ async function fetchAllUsersGames(usernames) {
       const games = await fetchArchiveGames(username, month, year);
       allGames.push(...games);
     }
-    console.info('    ' + allGames.length + ' games found.')
+    
+    const gamesForThisUser = allGames.length - userGameCount;
+    console.info(`    ${gamesForThisUser} games found for ${username} (total: ${allGames.length})`);
   }
+  
   // just the PGNs
   const allGamePGNs = allGames.map(g => g.pgn.replaceAll("\n", '    '))
   return allGamePGNs;
