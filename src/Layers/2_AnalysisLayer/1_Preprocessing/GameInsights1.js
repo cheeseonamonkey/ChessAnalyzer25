@@ -2,15 +2,7 @@
 // Aggregate insights treating all tracked users as one entity
 
 const initGameInsights1 = (game, usernames) => {
-  const white = game.header().White;
-  const black = game.header().Black;
-  
-  game.metrics.TrackedUsers = {
-    White: usernames.includes(white),
-    Black: usernames.includes(black)
-  };
-};
-
+ 
 const analyzeWinRates = (games, usernames) => {
   const stats = {
     totalGames: 0,
