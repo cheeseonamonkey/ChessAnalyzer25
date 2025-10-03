@@ -98,33 +98,34 @@ const getWinner = (game) => {
   return winnerColor === 'White' ? game.header().White : game.header().Black;
 };
 
-// compute metrics for one color
-const computeColorMetrics = async (game, color) => ({
-  TurnCastle: getTurnCastled(game, { color }),
-  CastleType: getCastleType(game, { color }),
-  TurnQueenTapped: getTurnQueenTapped(game, { color }),
-  TurnFirstCapture: getFirstCaptureTurn(game, { color }),
-  TotalCaptures: getCapturesByColor(game, { color }),
-  TurnFirstCheck: getFirstCheckTurn(game, { color }),
-  TotalChecks: getChecksByColor(game, { color }),
-  TotalPromotions: getPromotionsByColor(game, { color }),
-  TotalMoves: getMoveCount(game, { color })
-});
+// init all game metrics
+const initGameMetrics1 = (game) => {
 
-// init all game metrics (async with 2 concurrent threads)
-const initGameMetrics1 = async (game) => {
   // objective (color neutral)
   game.metrics.WinnerColor = getWinnerColor(game);
   game.metrics.Winner = getWinner(game);
 
-  // compute white and black metrics concurrently
-  const [whiteMetrics, blackMetrics] = await Promise.all([
-    computeColorMetrics(game, 'white'),
-    computeColorMetrics(game, 'black')
-  ]);
+  // white metrics
+  game.metrics.White.TurnCastle = getTurnCastled(game, { color: 'white' });
+  game.metrics.White.CastleType = getCastleType(game, { color: 'white' });
+  game.metrics.White.TurnQueenTapped = getTurnQueenTapped(game, { color: 'white' });
+  game.metrics.White.TurnFirstCapture = getFirstCaptureTurn(game, { color: 'white' });
+  game.metrics.White.TotalCaptures = getCapturesByColor(game, { color: 'white' });
+  game.metrics.White.TurnFirstCheck = getFirstCheckTurn(game, { color: 'white' });
+  game.metrics.White.TotalChecks = getChecksByColor(game, { color: 'white' });
+  game.metrics.White.TotalPromotions = getPromotionsByColor(game, { color: 'white' });
+  game.metrics.White.TotalMoves = getMoveCount(game, { color: 'white' });
 
-  game.metrics.White = whiteMetrics;
-  game.metrics.Black = blackMetrics;
+  // black metrics
+  game.metrics.Black.TurnCastle = getTurnCastled(game, { color: 'black' });
+  game.metrics.Black.CastleType = getCastleType(game, { color: 'black' });
+  game.metrics.Black.TurnQueenTapped = getTurnQueenTapped(game, { color: 'black' });
+  game.metrics.Black.TurnFirstCapture = getFirstCaptureTurn(game, { color: 'black' });
+  game.metrics.Black.TotalCaptures = getCapturesByColor(game, { color: 'black' });
+  game.metrics.Black.TurnFirstCheck = getFirstCheckTurn(game, { color: 'black' });
+  game.metrics.Black.TotalChecks = getChecksByColor(game, { color: 'black' });
+  game.metrics.Black.TotalPromotions = getPromotionsByColor(game, { color: 'black' });
+  game.metrics.Black.TotalMoves = getMoveCount(game, { color: 'black' });
 };
 
 module.exports = {

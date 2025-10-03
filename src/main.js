@@ -22,9 +22,9 @@ const { Pipeline } = require("./Util/Pipeline");
             console.log("Parsing PGNs...");
             return parsePgns(arr);
         },
-        async (arr) => {
+        (arr) => {
             console.log("Getting GameMetrics1...");
-            await Promise.all(arr.map(game => initGameMetrics1(game)));
+            arr.forEach(game => initGameMetrics1(game));
             return arr;
         },
         (arr) => {
