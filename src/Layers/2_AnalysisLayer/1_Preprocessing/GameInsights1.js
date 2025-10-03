@@ -1,71 +1,70 @@
 // GameInsights1.js
-// Aggregate insights across multiple games for specific users
+// Aggregate insights treating all tracked users as one entity
 
 const initGameInsights1 = (game, usernames) => {
-  // Determine which username(s) from our list played this game
   const white = game.header().White;
   const black = game.header().Black;
   
   game.metrics.TrackedUsers = {
-    White: usernames.includes(white) ? white : null,
-    Black: usernames.includes(black) ? black : null
+    White: usernames.includes(white),
+    Black: usernames.includes(black)
   };
 };
 
 const analyzeWinRates = (games, usernames) => {
-  const stats = {};
-  
-  // Initialize stats for each username
-  usernames.forEach(user => {
-    stats[user] = {
-      totalGames: 0,
-      wins: 0,
-      losses: 0,
-      draws: 0,
-      asWhite: { games: 0, wins: 0 },
-      asBlack: { games: 0, wins: 0 }
-    };
-  });
+  const stats = {
+    totalGames: 0,
+    wins: 0,
+    losses: 0,
+    draws: 0,
+    asWhite: { games: 0, wins: 0 },
+    asBlack: { games: 0, wins: 0 }
+  };
 
-  // Analyze each game
   games.forEach(game => {
     const white = game.header().White;
     const black = game.header().Black;
     const winner = game.metrics.Winner;
     const result = game.header().Result;
 
-    [white, black].forEach(player => {
-      if (!usernames.includes(player)) return;
-      
-      const s = stats[player];
-      s.totalGames++;
-      
-      const isWhite = player === white;
-      const colorStats = isWhite ? s.asWhite : s.asBlack;
-      colorStats.games++;
+    // Check if any tracked user is playing
+    const trackedAsWhite = usernames.includes(white);
+    const trackedAsBlack = usernames.includes(black);
+    
+    if (!trackedAsWhite && !trackedAsBlack) return;
 
-      if (result === '1/2-1/2') {
-        s.draws++;
-      } else if (winner === player) {
-        s.wins++;
-        colorStats.wins++;
-      } else {
-        s.losses++;
-      }
-    });
+    stats.totalGames++;
+    
+    // Count by color
+    if (trackedAsWhite) {
+      stats.asWhite.games++;
+      if (result === '1-0') stats.asWhite.wins++;
+    }
+    if (trackedAsBlack) {
+      stats.asBlack.games++;
+      if (result === '0-1') stats.asBlack.wins++;
+    }
+
+    // Count overall results
+    if (result === '1/2-1/2') {
+      stats.draws++;
+    } else if (usernames.includes(winner)) {
+      stats.wins++;
+    } else {
+      stats.losses++;
+    }
   });
 
   // Calculate percentages
-  Object.keys(stats).forEach(user => {
-    const s = stats[user];
-    if (s.totalGames === 0) return;
-    
-    s.winRate = ((s.wins / s.totalGames) * 100).toFixed(1);
-    s.lossRate = ((s.losses / s.totalGames) * 100).toFixed(1);
-    s.drawRate = ((s.draws / s.totalGames) * 100).toFixed(1);
-    s.asWhite.winRate = s.asWhite.games > 0 ? ((s.asWhite.wins / s.asWhite.games) * 100).toFixed(1) : 0;
-    s.asBlack.winRate = s.asBlack.games > 0 ? ((s.asBlack.wins / s.asBlack.games) * 100).toFixed(1) : 0;
-  });
+  if (stats.totalGames > 0) {
+    stats.winRate = ((stats.wins / stats.totalGames) * 100).toFixed(1);
+    stats.lossRate = ((stats.losses / stats.totalGames) * 100).toFixed(1);
+    stats.drawRate = ((stats.draws / stats.totalGames) * 100).toFixed(1);
+    stats.asWhite.winRate = stats.asWhite.games > 0 ? 
+      ((stats.asWhite.wins / stats.asWhite.games) * 100).toFixed(1) : 0;
+    stats.asBlack.winRate = stats.asBlack.games > 0 ? 
+      ((stats.asBlack.wins / stats.asBlack.games) * 100).toFixed(1) : 0;
+  }
 
   return stats;
 };
