@@ -6,7 +6,7 @@ const { initGameMetrics1 } = require("./Layers/2_AnalysisLayer/1_Preprocessing/G
 const { parsePgns } = require("./Layers/2_AnalysisLayer/1_Preprocessing/Parsing");
 const { fetchAllUsersGames } = require("./Layers/1_ProxyLayer/Fetchers");
 const { Pipeline } = require("./Util/Pipeline");
-const { evaluateGamePositions } = require('./Layers/2_AnalysisLayer/1_Preprocessing/GamePositionsMetrics');
+const { evaluateGamePositions } = require('./Layers/2_AnalysisLayer/1_Preprocessing/GamePositions');
 
 const printMetricStats = (title, stats) => {
     console.log(`\n${title}:`);
