@@ -21,7 +21,7 @@ const printMetricStats = (title, stats) => {
 
     const mainPipeline = new Pipeline('Root', [
         async () => {
-            console.log("Fetching games...")
+            console.log("\nFetching games...")
             const games = await fetchAllUsersGames(usernames);
             console.log(`${games.length} games fetched.`);
             return games;
