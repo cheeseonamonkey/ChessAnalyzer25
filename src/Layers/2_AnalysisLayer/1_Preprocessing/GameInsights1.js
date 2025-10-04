@@ -63,35 +63,27 @@ const analyzeWinRatesByMetrics = (games, usernames) => {
     if (usernames.includes(black)) return 'Black';
     return null;
   };
-
   const isWin = (game, color) => {
     const result = game.header().Result;
     return (color === 'White' && result === '1-0') || (color === 'Black' && result === '0-1');
   };
-
   const groupBy = (metricGetter) => {
     const groups = {};
     games.forEach(game => {
       const color = getUserColor(game, usernames);
       if (!color) return;
-
       const value = metricGetter(game, color);
       if (value === null || value === undefined) return;
-
       if (!groups[value]) groups[value] = { games: 0, wins: 0 };
       groups[value].games++;
       if (isWin(game, color)) groups[value].wins++;
     });
-
-    // Calculate win rates
     Object.keys(groups).forEach(key => {
       const g = groups[key];
       g.winRate = ((g.wins / g.games) * 100).toFixed(1);
     });
-
     return groups;
   };
-
   return {
     byCastleTurn: groupBy((game, color) => {
       const turn = game.metrics[color]?.TurnCastle;
@@ -101,11 +93,9 @@ const analyzeWinRatesByMetrics = (games, usernames) => {
       if (turn <= 16) return 'Late (10-16)';
       return 'Very Late (>16)';
     }),
-
     byCastleType: groupBy((game, color) => 
       game.metrics[color]?.CastleType || 'No Castle'
     ),
-
     byQueenTapTurn: groupBy((game, color) => {
       const turn = game.metrics[color]?.TurnQueenTapped;
       if (!turn) return 'Never';
@@ -113,7 +103,6 @@ const analyzeWinRatesByMetrics = (games, usernames) => {
       if (turn <= 15) return 'Mid (6-15)';
       return 'Late (>15)';
     }),
-
     byFirstCaptureTurn: groupBy((game, color) => {
       const turn = game.metrics[color]?.TurnFirstCapture;
       if (!turn) return 'No Captures';
@@ -121,7 +110,6 @@ const analyzeWinRatesByMetrics = (games, usernames) => {
       if (turn <= 20) return 'Mid (11-20)';
       return 'Late (>20)';
     }),
-
     byTotalCaptures: groupBy((game, color) => {
       const captures = game.metrics[color]?.TotalCaptures || 0;
       if (captures === 0) return '0';
@@ -129,19 +117,33 @@ const analyzeWinRatesByMetrics = (games, usernames) => {
       if (captures <= 6) return '4-6';
       return '7+';
     }),
-
     byTotalChecks: groupBy((game, color) => {
       const checks = game.metrics[color]?.TotalChecks || 0;
       if (checks === 0) return '0';
       if (checks <= 2) return '1-2';
       return '3+';
     }),
-
     byPromotions: groupBy((game, color) => {
       const promo = game.metrics[color]?.TotalPromotions || 0;
       return promo > 0 ? 'Had Promotion' : 'No Promotion';
-    })
+    }),
+    byTotalMoves: groupBy((game, color) => {
+      const moves = game.metrics[color]?.TotalMoves || 0;
+      if (moves <= 20) return 'Short (≤20)';
+      if (moves <= 40) return 'Medium (21-40)';
+      if (moves <= 60) return 'Long (41-60)';
+      return 'Very Long (>60)';
+    }),
+    byAvgCentipawnLoss: groupBy((game, color) => {
+      const loss = game.metrics[color]?.avgCentipawnLoss;
+      if (!loss) return 'N/A';
+      if (loss <= 30) return 'Excellent (≤30)';
+      if (loss <= 60) return 'Good (31-60)';
+      if (loss <= 100) return 'Fair (61-100)';
+      return 'Poor (>100)';
+    }),
+    byECO: groupBy((game) => game.metrics?.ECO || 'Unknown'),
+    byFirstTurn: groupBy((game) => game.metrics?.FirstTurn || 'Unknown')
   };
 };
-
 module.exports = { analyzeWinRates, analyzeWinRatesByMetrics };

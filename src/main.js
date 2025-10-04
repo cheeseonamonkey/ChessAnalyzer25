@@ -18,7 +18,7 @@ const printMetricStats = (title, stats) => {
 (async () => {
     console.log('\nStarting pipeline...\n');
 
-    const usernames = ['ffffattyyyy'] //,  'ffatty190', 'ffatty120', 'ffatty', 'ffatty140', 'fffatty', 'ffattyyy'];
+    const usernames = ['ffffattyyyy', 'ffattyyy', 'ffatty120', 'fffattyy', 'ffatty190', 'ffatty140', 'ffatty', 'ffattyy'] //,  'ffatty190', 'ffatty120', 'ffatty', 'ffatty140', 'fffatty', 'ffattyyy'];
 
     const mainPipeline = new Pipeline('Root', [
         async () => {
@@ -65,7 +65,7 @@ const printMetricStats = (title, stats) => {
                 bar.update(i+1);
             })
             bar.stop();
-            console.log(games.map(g=>g.metrics))
+            console.log('\nsingle game metrics example: \n' + JSON.stringify(games[5].metrics))
             return games;
         },
         (games) => {
@@ -79,6 +79,10 @@ const printMetricStats = (title, stats) => {
             printMetricStats("By Total Captures", metricStats.byTotalCaptures);
             printMetricStats("By Total Checks", metricStats.byTotalChecks);
             printMetricStats("By Promotions", metricStats.byPromotions);
+            printMetricStats("By Total Moves", metricStats.byTotalMoves);
+            printMetricStats("By Avg Centipawn Loss", metricStats.byAvgCentipawnLoss);
+            printMetricStats("By ECO", metricStats.byECO);
+            printMetricStats("By First Turn", metricStats.byFirstTurn);
 
             return games;
         }
