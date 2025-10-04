@@ -34,7 +34,13 @@ const { Pipeline } = require("./Util/Pipeline");
         },
         (arr) => {
             console.log("\n=== WIN RATE ANALYSIS ===\n");
-
+            
+            console.log(`Tracked Users (${usernames.join(', ')}):`);
+            console.log(`  Total Games: ${winRates.totalGames}`);
+            console.log(`  Overall: ${winRates.wins}W / ${winRates.losses}L / ${winRates.draws}D (${winRates.winRate}% win rate)`);
+            console.log(`  As White: ${winRates.asWhite.wins}/${winRates.asWhite.games} (${winRates.asWhite.winRate}%)`);
+            console.log(`  As Black: ${winRates.asBlack.wins}/${winRates.asBlack.games} (${winRates.asBlack.winRate}%)`);
+            console.log();
             
             return arr;
         }
