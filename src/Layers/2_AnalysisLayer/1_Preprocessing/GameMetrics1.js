@@ -75,27 +75,66 @@ const getWinner = (game) => {
   return winnerColor === 'White' ? game.header().White : game.header().Black;
 };
 
-// Helper to reduce repetition
-const initColorMetrics = (game, color) => {
-  const opts = { color };
-  return {
-    TurnCastle: getTurnCastled(game, opts),
-    CastleType: getCastleType(game, opts),
-    TurnQueenTapped: getTurnQueenTapped(game, opts),
-    TurnFirstCapture: getFirstCaptureTurn(game, opts),
-    TotalCaptures: getCapturesByColor(game, opts),
-    TurnFirstCheck: getFirstCheckTurn(game, opts),
-    TotalChecks: getChecksByColor(game, opts),
-    TotalPromotions: getPromotionsByColor(game, opts),
-    TotalMoves: getMoveCount(game, opts)
+// Single-pass metric collection
+const collectColorMetrics = (moves, color) => {
+  const c = color[0].toLowerCase();
+  const metrics = {
+    TurnCastle: null,
+    CastleType: null,
+    TurnQueenTapped: null,
+    TurnFirstCapture: null,
+    TotalCaptures: 0,
+    TurnFirstCheck: null,
+    TotalChecks: 0,
+    TotalPromotions: 0,
+    TotalMoves: 0
   };
+
+  moves.forEach((m, idx) => {
+    if (m.color !== c) return;
+    
+    metrics.TotalMoves++;
+    const turn = Math.floor(idx / 2) + 1;
+
+    // Castle
+    if (!metrics.TurnCastle && (m.flags.includes('k') || m.flags.includes('q'))) {
+      metrics.TurnCastle = turn;
+      metrics.CastleType = m.flags.includes('k') ? 'O-O' : 'O-O-O';
+    }
+
+    // Queen tap
+    if (!metrics.TurnQueenTapped && m.piece === 'q') {
+      metrics.TurnQueenTapped = turn;
+    }
+
+    // Captures
+    if (m.flags.includes('c') || m.flags.includes('e')) {
+      if (!metrics.TurnFirstCapture) metrics.TurnFirstCapture = turn;
+      metrics.TotalCaptures++;
+    }
+
+    // Checks
+    if (m.san.includes('+')) {
+      if (!metrics.TurnFirstCheck) metrics.TurnFirstCheck = turn;
+      metrics.TotalChecks++;
+    }
+
+    // Promotions
+    if (m.flags.includes('p')) {
+      metrics.TotalPromotions++;
+    }
+  });
+
+  return metrics;
 };
 
 const initGameMetrics1 = (game) => {
+  const moves = game.history({ verbose: true });
+  
   game.metrics.WinnerColor = getWinnerColor(game);
   game.metrics.Winner = getWinner(game);
-  game.metrics.White = initColorMetrics(game, 'white');
-  game.metrics.Black = initColorMetrics(game, 'black');
+  game.metrics.White = collectColorMetrics(moves, 'white');
+  game.metrics.Black = collectColorMetrics(moves, 'black');
 };
 
 module.exports = {

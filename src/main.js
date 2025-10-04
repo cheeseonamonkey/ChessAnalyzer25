@@ -6,6 +6,7 @@ const { initGameMetrics1 } = require("./Layers/2_AnalysisLayer/1_Preprocessing/G
 const { parsePgns } = require("./Layers/2_AnalysisLayer/1_Preprocessing/Parsing");
 const { fetchAllUsersGames } = require("./Layers/1_ProxyLayer/Fetchers");
 const { Pipeline } = require("./Util/Pipeline");
+const { evaluateGamePositions } = require('./Layers/2_AnalysisLayer/1_Preprocessing/GamePositionAnalyzer');
 
 const printMetricStats = (title, stats) => {
     console.log(`\n${title}:`);
@@ -17,7 +18,7 @@ const printMetricStats = (title, stats) => {
 (async () => {
     console.log('\nStarting pipeline...\n');
 
-    const usernames = ['ffffattyyyy', 'ffatty190', 'ffatty120', 'ffatty', 'ffatty140', 'fffatty', 'ffattyyy'];
+    const usernames = ['ffffattyyyy'] //,  'ffatty190', 'ffatty120', 'ffatty', 'ffatty140', 'fffatty', 'ffattyyy'];
 
     const mainPipeline = new Pipeline('Root', [
         async () => {
@@ -35,12 +36,12 @@ const printMetricStats = (title, stats) => {
             console.log("\nComputing game metrics...");
             const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
             bar.start(games.length, 0);
-            
+
             games.forEach((game, i) => {
                 initGameMetrics1(game);
                 bar.update(i + 1);
             });
-            
+
             bar.stop();
             return games;
         },
@@ -56,45 +57,21 @@ const printMetricStats = (title, stats) => {
             return games;
         },
         (games) => {
-            console.log("\nAnalyzing positions...");
-            const { evaluateAggregate, evaluateMaterial, evaluatePositional } = require("./Layers/2_AnalysisLayer/EvaluationEngine");
-            const Chess = require("chess.js").Chess;
+            console.log("\nAnalyzing game positions...");
             const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
             bar.start(games.length, 0);
-            
-            games.forEach((game, idx) => {
-                const moves = game.history({verbose: true});
-                
-                //console.log(moves)
-
-                const scoreVector_aggregate = [];
-                const scoreVector_material  = [];
-                const scoreVector_position  = [];
-                
-                moves.forEach(m => {
-                    scoreVector_aggregate.push(evaluateAggregate(m.after));
-                    scoreVector_material.push(evaluateMaterial(m.after));
-                    scoreVector_position.push(evaluatePositional(m.after));
-                });
-                
-                game.metrics.scoreVector_aggregate = scoreVector_aggregate;
-                game.metrics.scoreVector_material = scoreVector_material;
-                game.metrics.scoreVector_position = scoreVector_position;
-
-                bar.update(idx + 1);
-            });
-            
+            games.forEach(game => {
+                evaluateGamePositions(game)
+                bar.update();
+            })
             bar.stop();
-
-            console.log('\n\n' + games[0].metrics)
-
+            //console.log(games[5].metrics)
             return games;
-
         },
         (games) => {
             console.log("\n=== WIN RATES BY GAME METRICS ===");
             const metricStats = analyzeWinRatesByMetrics(games, usernames);
-            
+
             printMetricStats("By Castle Timing", metricStats.byCastleTurn);
             printMetricStats("By Castle Type", metricStats.byCastleType);
             printMetricStats("By Queen Tap Timing", metricStats.byQueenTapTurn);
@@ -102,7 +79,7 @@ const printMetricStats = (title, stats) => {
             printMetricStats("By Total Captures", metricStats.byTotalCaptures);
             printMetricStats("By Total Checks", metricStats.byTotalChecks);
             printMetricStats("By Promotions", metricStats.byPromotions);
-            
+
             return games;
         }
     ]);
