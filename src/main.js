@@ -15,9 +15,9 @@ const printMetricStats = (title, stats) => {
 };
 
 (async () => {
-    console.log('Starting pipeline...');
+    console.log('\nStarting pipeline...\n');
 
-    const usernames = ['ffffattyyyy', 'ffatty100', 'ffatty190', 'ffatty120', 'ffatty', 'ffatty140'];
+    const usernames = ['ffffattyyyy', 'ffatty190', 'ffatty120', 'ffatty', 'ffatty140', 'ffattyy', 'ffatty180'];
 
     const mainPipeline = new Pipeline('Root', [
         async () => {
