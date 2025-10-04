@@ -1,7 +1,8 @@
 // GamePositionAnalyzer.js
 const Chess = require("chess.js").Chess;
 const { evaluateAggregate } = require('../EvaluationEngine');
-const cliProgress = require('cli-progress')
+const cliProgress = require('cli-progress');
+const { calculateClosedness, calculateOpenness } = require("./PositionMetrics");
 
 const evaluatePosition = (fen) => evaluateAggregate(fen);
 
@@ -11,7 +12,25 @@ const calculateCentipawnLoss = (prevScore, currScore, isWhiteMove) => {
     : Math.max(0, currScore - prevScore);
 };
 
+function initOpennessAndClosedness(game) {
+  const moves = game.history({ verbose: true }).map(m => m.after);
+
+  let openness = []
+  let closedness = []
+
+  moves.forEach(m=> {
+    openness.push(calculateOpenness(m))
+    closedness.push(calculateClosedness(m))
+  })
+  game.metrics.opennessVector = openness
+  game.metrics.closednessVector = closedness
+}
+
 function evaluateGamePositions(game) {
+
+  initOpennessAndClosedness(game)
+
+
   const moves = game.history({ verbose: true });
   const scoreVector_aggregate = moves.map(m => evaluatePosition(m.after));
   
