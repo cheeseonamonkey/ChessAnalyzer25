@@ -1,16 +1,6 @@
 // GameInsights1.js
 // Aggregate insights treating all tracked users as one entity
 
-const initGameInsights1 = (game, usernames) => {
-  const white = game.header().White;
-  const black = game.header().Black;
-  
-  game.metrics.TrackedUsers = {
-    White: usernames.includes(white),
-    Black: usernames.includes(black)
-  };
-};
-
 const analyzeWinRates = (games, usernames) => {
   const stats = {
     totalGames: 0,
@@ -24,10 +14,8 @@ const analyzeWinRates = (games, usernames) => {
   games.forEach(game => {
     const white = game.header().White;
     const black = game.header().Black;
-    const winner = game.metrics.Winner;
     const result = game.header().Result;
 
-    // Check if any tracked user is playing
     const trackedAsWhite = usernames.includes(white);
     const trackedAsBlack = usernames.includes(black);
     
@@ -35,7 +23,6 @@ const analyzeWinRates = (games, usernames) => {
 
     stats.totalGames++;
     
-    // Count by color
     if (trackedAsWhite) {
       stats.asWhite.games++;
       if (result === '1-0') stats.asWhite.wins++;
@@ -45,10 +32,9 @@ const analyzeWinRates = (games, usernames) => {
       if (result === '0-1') stats.asBlack.wins++;
     }
 
-    // Count overall results
     if (result === '1/2-1/2') {
       stats.draws++;
-    } else if (usernames.includes(winner)) {
+    } else if (usernames.includes(game.metrics.Winner)) {
       stats.wins++;
     } else {
       stats.losses++;
@@ -69,7 +55,4 @@ const analyzeWinRates = (games, usernames) => {
   return stats;
 };
 
-module.exports = {
-  initGameInsights1,
-  analyzeWinRates
-};
+module.exports = { analyzeWinRates };
