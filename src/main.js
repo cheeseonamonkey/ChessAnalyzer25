@@ -17,7 +17,7 @@ const printMetricStats = (title, stats) => {
 (async () => {
     console.log('\nStarting pipeline...\n');
 
-    const usernames = ['ffffattyyyy', 'ffatty190', 'ffatty120', 'ffatty', 'ffatty140', 'ffattyy', 'ffatty180'];
+    const usernames = ['ffffattyyyy', 'ffatty190', 'ffatty120', 'ffatty', 'ffatty140', 'fffatty', 'ffattyyy'];
 
     const mainPipeline = new Pipeline('Root', [
         async () => {
@@ -65,19 +65,21 @@ const printMetricStats = (title, stats) => {
             games.forEach((game, idx) => {
                 const moves = game.history({verbose: true});
                 
+                //console.log(moves)
+
                 const scoreVector_aggregate = [];
                 const scoreVector_material  = [];
                 const scoreVector_position  = [];
                 
                 moves.forEach(m => {
-                    scoreVector_aggregate.push(evaluateAggregate(m.fen()));
-                    scoreVector_material.push(evaluateMaterial(m.fen()));
-                    scoreVector_position.push(evaluatePositional(m.fen()));
+                    scoreVector_aggregate.push(evaluateAggregate(m.after));
+                    scoreVector_material.push(evaluateMaterial(m.after));
+                    scoreVector_position.push(evaluatePositional(m.after));
                 });
                 
                 game.metrics.scoreVector_aggregate = scoreVector_aggregate;
-                game.metrics.scoreVector_aggregate = scoreVector_material;
-                game.metrics.scoreVector_aggregate = scoreVector_position;
+                game.metrics.scoreVector_material = scoreVector_material;
+                game.metrics.scoreVector_position = scoreVector_position;
 
                 bar.update(idx + 1);
             });
