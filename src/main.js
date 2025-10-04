@@ -9,7 +9,7 @@ const { Pipeline } = require("./Util/Pipeline");
 (async () => {
     console.log('Starting pipeline...');
 
-    const usernames = ['ffffattyyyy', 'ffatty100', 'ffatty110', 'ffatty190', 'ffatty120', 'ffatty', 'ffatty140'];
+    const usernames = ['ffffattyyyy', 'ffatty100', 'ffatty190', 'ffatty120', 'ffatty', 'ffatty140'];
 
     const mainPipeline = new Pipeline('Root', [
         async () => {
