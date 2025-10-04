@@ -105,7 +105,7 @@ const PIECE_VALUES = {
       const row = board[rank];
       for (let file = 0; file < 8; file++) {
         const piece = row[file];
-        if (piece === '.') continue;
+        if (piece.includes(['.', 'K', 'k'])) continue;
   
         const isWhitePiece = isWhite(piece);
         const pieceType = piece.toUpperCase();

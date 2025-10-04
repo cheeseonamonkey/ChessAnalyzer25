@@ -56,6 +56,40 @@ const printMetricStats = (title, stats) => {
             return games;
         },
         (games) => {
+            console.log("\nAnalyzing positions...");
+            const { evaluateAggregate, evaluateMaterial, evaluatePositional } = require("./Layers/2_AnalysisLayer/EvaluationEngine");
+            const Chess = require("chess.js").Chess;
+            const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+            bar.start(games.length, 0);
+            
+            games.forEach((game, idx) => {
+                const moves = game.history({verbose: true});
+                
+                const scoreVector_aggregate = [];
+                const scoreVector_material  = [];
+                const scoreVector_position  = [];
+                
+                moves.forEach(m => {
+                    scoreVector_aggregate.push(evaluateAggregate(m.fen()));
+                    scoreVector_material.push(evaluateMaterial(m.fen()));
+                    scoreVector_position.push(evaluatePositional(m.fen()));
+                });
+                
+                game.metrics.scoreVector_aggregate = scoreVector_aggregate;
+                game.metrics.scoreVector_aggregate = scoreVector_material;
+                game.metrics.scoreVector_aggregate = scoreVector_position;
+
+                bar.update(idx + 1);
+            });
+            
+            bar.stop();
+
+            console.log('\n\n' + games[0].metrics)
+
+            return games;
+
+        },
+        (games) => {
             console.log("\n=== WIN RATES BY GAME METRICS ===");
             const metricStats = analyzeWinRatesByMetrics(games, usernames);
             
