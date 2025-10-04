@@ -12,6 +12,19 @@ const getMovesByColor = (game, { color = null, user = null } = {}) => {
   return game.history({ verbose: true }).filter(m => m.color === c);
 };
 
+const getECO = (game) => {
+  const url = game.header().ECOUrl;
+  if (!url) return null;
+  const parts = url.split('/openings/')[1];
+  if (!parts) return null;
+  return parts.split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
+};
+
+const getFirstTurnMoves = (game) => {
+  const moves = game.history();
+  return moves.slice(0, 2).join(' ');
+};
+
 const hasCastled = (game, { color = null, user = null } = {}) => {
   const moves = getMovesByColor(game, { color, user });
   return moves.some(m => m.flags.includes('k') || m.flags.includes('q'));
@@ -131,11 +144,14 @@ const collectColorMetrics = (moves, color) => {
 const initGameMetrics1 = (game) => {
   const moves = game.history({ verbose: true });
   
+  game.metrics.ECO = getECO(game);
+  game.metrics.FirstTurn = getFirstTurnMoves(game);
   game.metrics.WinnerColor = getWinnerColor(game);
   game.metrics.Winner = getWinner(game);
   game.metrics.White = collectColorMetrics(moves, 'white');
   game.metrics.Black = collectColorMetrics(moves, 'black');
 };
+
 
 module.exports = {
   initGameMetrics1,
@@ -152,5 +168,7 @@ module.exports = {
   getChecksByColor,
   getPromotionsByColor,
   getWinnerColor,
-  getWinner
+  getWinner,
+  getECO,
+  getFirstTurnMoves
 };

@@ -65,7 +65,7 @@ const printMetricStats = (title, stats) => {
                 bar.update(i+1);
             })
             bar.stop();
-            console.log(games[5])
+            console.log(games)
             return games;
         },
         (games) => {
