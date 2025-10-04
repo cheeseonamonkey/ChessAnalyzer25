@@ -60,12 +60,12 @@ const printMetricStats = (title, stats) => {
             console.log("\nAnalyzing game positions...");
             const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
             bar.start(games.length, 0);
-            games.forEach(game => {
+            games.forEach((game, i) => {
                 evaluateGamePositions(game)
-                bar.update();
+                bar.update(i+1);
             })
             bar.stop();
-            //console.log(games[5].metrics)
+            console.log(games[5])
             return games;
         },
         (games) => {
