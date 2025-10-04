@@ -1,5 +1,6 @@
 // main.js
 
+const cliProgress = require('cli-progress');
 const { analyzeWinRates, analyzeWinRatesByMetrics } = require("./Layers/2_AnalysisLayer/1_Preprocessing/GameInsights1");
 const { initGameMetrics1 } = require("./Layers/2_AnalysisLayer/1_Preprocessing/GameMetrics1");
 const { parsePgns } = require("./Layers/2_AnalysisLayer/1_Preprocessing/Parsing");
@@ -27,11 +28,20 @@ const printMetricStats = (title, stats) => {
         },
         (games) => {
             console.log("\nParsing PGNs...");
-            return parsePgns(games);
+            const parsed = parsePgns(games);
+            return parsed;
         },
         (games) => {
             console.log("\nComputing game metrics...");
-            games.forEach(game => initGameMetrics1(game));
+            const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+            bar.start(games.length, 0);
+            
+            games.forEach((game, i) => {
+                initGameMetrics1(game);
+                bar.update(i + 1);
+            });
+            
+            bar.stop();
             return games;
         },
         (games) => {
