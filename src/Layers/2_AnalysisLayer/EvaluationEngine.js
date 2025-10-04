@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const PIECE_VALUES = {
-    P: 100, N: 282, B: 318, R: 479, Q: 933, K: 60000,
+    P: 100, N: 282, B: 318, R: 479, Q: 933, K: 50000,
   };
   
   const PST = {
@@ -105,7 +105,7 @@ const PIECE_VALUES = {
       const row = board[rank];
       for (let file = 0; file < 8; file++) {
         const piece = row[file];
-        if (piece.includes(['.', 'K', 'k'])) continue;
+        if (piece === '.' || piece === 'K' || piece === 'k') continue; // skip kings for material
   
         const isWhitePiece = isWhite(piece);
         const pieceType = piece.toUpperCase();

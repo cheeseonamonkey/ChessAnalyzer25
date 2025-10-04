@@ -29,7 +29,11 @@ function evaluateGamePositions(game) {
     }
   });
   
-  game.metrics.centipawnLoss = { white: whiteLosses, black: blackLosses };
+  game.metrics.White.centipawnLossVector = whiteLosses
+  game.metrics.Black.centipawnLossVector = blackLosses
+
+  game.metrics.White.avgCentipawnLoss = whiteLosses.reduce((sum, loss) => sum + loss, 0) / whiteLosses.length || 0
+  game.metrics.Black.avgCentipawnLoss = blackLosses.reduce((sum, loss) => sum + loss, 0) / blackLosses.length || 0
 }
 
 module.exports = {
