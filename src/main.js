@@ -65,7 +65,7 @@ const printMetricStats = (title, stats) => {
                 bar.update(i+1);
             })
             bar.stop();
-            console.log(JSON.stringify(games))
+            console.log(games.map(g=>g.metrics))
             return games;
         },
         (games) => {
